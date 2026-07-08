@@ -96,7 +96,7 @@ a,
 button,
 [role='button'],
 .interactive {
-  cursor: url('../assets/cursor-glove.svg') 9 2, pointer;
+  cursor: url('../assets/cursor-glove.svg') 14 3, pointer;
 }
 
 /* ===== Squash & stretch ===== */
