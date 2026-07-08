@@ -4,6 +4,8 @@ tags: [дизайн-система, Figma, токены]
 link: https://rain-tulip-149.notion.site/Submarine-e7ebb0aa26d546e88c8fc73f2b345fff
 ---
 
+![Дизайн-система Submarine v1.3.1: variables, components, autolayouts, variants, тёмная и светлая темы](./submarine-cover.webp)
+
 Дизайн-система, ориентированная на веб-интерфейсы. Создана с нуля для киберполигона Ampire, позже на неё переведены продукты AmTIP и IM.
 
 - Тёмная и светлая темы: все компоненты адаптированы под обе
