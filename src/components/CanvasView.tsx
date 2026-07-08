@@ -7,6 +7,7 @@ import { FrameShell } from './FrameShell'
 import { BottomNav } from './BottomNav'
 import { Minimap } from './Minimap'
 import { CanvasDecor, GrainOverlay, Vignette } from './Decor'
+import { CursorHint } from './CursorHint'
 
 interface Props {
   route: Route
@@ -67,6 +68,7 @@ export function CanvasView({ route, navigate, theme, onToggleTheme }: Props) {
         ))}
       </div>
       <Vignette />
+      <CursorHint />
       <BottomNav
         sections={SECTIONS}
         active={engine.activeFrame ?? route.section}

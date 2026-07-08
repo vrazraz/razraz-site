@@ -342,6 +342,29 @@ a.chip {
   }
 }
 
+/* ===== Подсказка у курсора ===== */
+.cursor-hint {
+  position: fixed;
+  z-index: 80;
+  pointer-events: none;
+  background: var(--panel-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 3px 3px 0 var(--shadow-cel);
+  color: var(--text-3);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 12px;
+  white-space: nowrap;
+  opacity: 1;
+  transition: opacity 2s ease;
+}
+
+.cursor-hint--fading {
+  opacity: 0;
+}
+
 /* ===== Окно пароля NDA ===== */
 .pass-gate {
   position: fixed;
