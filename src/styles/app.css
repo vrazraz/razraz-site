@@ -278,6 +278,33 @@ a.chip {
   display: block;
 }
 
+/* Превью кейсов под NDA: блюр + водяная надпись */
+.project-card__cover--nda {
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card__cover--nda img {
+  filter: blur(14px) saturate(0.8);
+  transform: scale(1.15);
+}
+
+.project-card__nda {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: var(--text);
+  opacity: 0.3;
+  user-select: none;
+  pointer-events: none;
+}
+
 .project-card__body {
   padding: 10px 12px 12px;
   display: flex;
@@ -310,6 +337,86 @@ a.chip {
   .project-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+/* ===== Окно пароля NDA ===== */
+.pass-gate {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 55;
+  width: min(360px, calc(100vw - 40px));
+  padding: 24px;
+}
+
+.pass-gate__title {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.pass-gate__text {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-2);
+  margin-bottom: 16px;
+}
+
+.pass-gate__row {
+  display: flex;
+  gap: 8px;
+}
+
+.pass-gate__input {
+  flex: 1;
+  min-width: 0;
+  background: var(--control-bg);
+  border: 2px solid var(--outline);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 8px 12px;
+}
+
+.pass-gate__input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.pass-gate__submit {
+  background: var(--accent);
+  border: 2px solid var(--outline);
+  border-radius: 10px;
+  color: var(--on-accent);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 16px;
+  box-shadow: 2.5px 2.5px 0 var(--shadow-cel);
+}
+
+.pass-gate__submit:active {
+  transform: scale(0.96);
+  box-shadow: 1px 1px 0 var(--shadow-cel);
+}
+
+.pass-gate__error {
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #ff5c5c;
+}
+
+.pass-gate--error {
+  animation: pass-gate-shake 0.35s ease;
+}
+
+@keyframes pass-gate-shake {
+  20% { transform: translate(calc(-50% - 8px), -50%); }
+  45% { transform: translate(calc(-50% + 7px), -50%); }
+  70% { transform: translate(calc(-50% - 4px), -50%); }
+  100% { transform: translate(-50%, -50%); }
 }
 
 /* ===== Блог ===== */

@@ -30,6 +30,7 @@ export interface ProjectDoc extends MarkdownDoc {
   tags: string[]
   link?: string
   cover?: string
+  nda: boolean
 }
 
 export interface TimelineEntry {
@@ -96,6 +97,13 @@ export const projects: ProjectDoc[] = Object.entries(projectFiles)
   .map(([path, raw]) => {
     const slug = path.split('/').pop()!.replace(/\.md$/, '')
     const doc = toDoc(raw)
-    return { ...doc, slug, tags: parseList(doc.meta.tags), link: doc.meta.link, cover: doc.meta.cover }
+    return {
+      ...doc,
+      slug,
+      tags: parseList(doc.meta.tags),
+      link: doc.meta.link,
+      cover: doc.meta.cover,
+      nda: doc.meta.nda === 'true',
+    }
   })
   .sort((a, b) => a.slug.localeCompare(b.slug))

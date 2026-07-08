@@ -22,8 +22,9 @@ export function ProjectsFrame({ onOpenProject }: { onOpenProject: (slug: string)
             }}
           >
             {p.cover && (
-              <div className="project-card__cover">
+              <div className={'project-card__cover' + (p.nda ? ' project-card__cover--nda' : '')}>
                 <img src={p.cover} alt="" loading="lazy" />
+                {p.nda && <span className="project-card__nda">NDA</span>}
               </div>
             )}
             <div className="project-card__body">
