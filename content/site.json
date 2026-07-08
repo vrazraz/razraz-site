@@ -1,10 +1,11 @@
 {
-  "name": "Виталий",
-  "tagline": "Персональный сайт",
-  "email": "razrazmv@gmail.com",
+  "name": "Виталий Матыцин",
+  "tagline": "Product designer",
+  "email": "v.maticyn@gmail.com",
   "telegramChannel": "",
   "social": [
-    { "label": "Telegram", "url": "https://t.me/" },
-    { "label": "GitHub", "url": "https://github.com/" }
+    { "label": "Telegram", "url": "https://t.me/nafanyah" },
+    { "label": "Behance", "url": "https://www.behance.net/vmatic" },
+    { "label": "Gmail", "url": "mailto:v.maticyn@gmail.com" }
   ]
 }
