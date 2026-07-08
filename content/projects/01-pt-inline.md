@@ -1,6 +1,7 @@
 ---
 title: PT NGFW — инлайн-создание сложной подсущности
 tags: [PT NGFW, UX-исследование, enterprise]
+cover: ./pt-inline-hero.webp
 link: https://rain-tulip-149.notion.site/PT-1969fb581b5a800b892ac00782b911df
 ---
 

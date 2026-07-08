@@ -1,6 +1,7 @@
 ---
 title: Редактор анкет для интервьюирования
 tags: [LeadFrog, ноды, исследование]
+cover: ./survey-editor-hero.webp
 link: https://rain-tulip-149.notion.site/467dcac187724136ac2a81547e66dd0e
 ---
 
