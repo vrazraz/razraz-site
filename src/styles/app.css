@@ -572,22 +572,44 @@ a.chip {
   background: radial-gradient(ellipse at center, transparent 70%, var(--vignette) 100%);
 }
 
-/* ===== Мобильная лента ===== */
+/* ===== Мобильный пейджер: один фрейм на экран, свайп по горизонтали ===== */
 .feed {
   height: 100%;
-  overflow-y: auto;
-  padding: 28px 14px 110px;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
+  overflow: hidden;
+  position: relative;
   background-color: var(--canvas-bg);
   background-image: radial-gradient(var(--canvas-dot) 1.3px, transparent 1.3px);
   background-size: 22px 22px;
 }
 
+.feed__track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.32s cubic-bezier(0.22, 0.85, 0.35, 1.08);
+  will-change: transform;
+}
+
+.feed__track--dragging {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feed__track {
+    transition: none;
+  }
+}
+
+.feed__slide {
+  flex: 0 0 100%;
+  min-width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding: 28px 14px 110px;
+  touch-action: pan-y;
+}
+
 .feed__section {
   position: relative;
-  scroll-margin-top: 24px;
 }
 
 .feed__body {
