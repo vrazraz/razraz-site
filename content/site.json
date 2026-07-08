@@ -1,0 +1,10 @@
+{
+  "name": "Виталий",
+  "tagline": "Персональный сайт",
+  "email": "razrazmv@gmail.com",
+  "telegramChannel": "",
+  "social": [
+    { "label": "Telegram", "url": "https://t.me/" },
+    { "label": "GitHub", "url": "https://github.com/" }
+  ]
+}
