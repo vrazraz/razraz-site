@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { Theme } from '../hooks'
 import type { Section } from '../sections'
 
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export function BottomNav({ sections, active, onSelect, theme, onToggleTheme, scale, onResetZoom }: Props) {
+  const [spark, setSpark] = useState(0)
   return (
     <nav className="bottom-nav toon-panel" aria-label="Разделы">
       {sections.map((s) => (
@@ -32,11 +34,25 @@ export function BottomNav({ sections, active, onSelect, theme, onToggleTheme, sc
       )}
       <button
         className="bottom-nav__theme"
-        onClick={onToggleTheme}
+        onClick={() => {
+          setSpark((s) => s + 1)
+          onToggleTheme()
+        }}
         aria-label={theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
         title={theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
       >
         {theme === 'dark' ? '☀' : '☾'}
+        {spark > 0 && (
+          <svg key={spark} className="nav-spark" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M10 1 l2 6 6 0.6 -4.5 4 1.5 6.4 -5 -3.6 -5 3.6 1.5 -6.4 -4.5 -4 6 -0.6 z"
+              fill="var(--accent)"
+              stroke="var(--outline)"
+              strokeWidth="1.6"
+              strokeLinejoin="round"
+            />
+          </svg>
+        )}
       </button>
     </nav>
   )

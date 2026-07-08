@@ -14,6 +14,7 @@ export default function App() {
   const isMobile = useIsMobile()
   const [unlocked, setUnlocked] = useState<ReadonlySet<string>>(new Set())
   const [celebrating, setCelebrating] = useState(false)
+  const [shakeFrame, setShakeFrame] = useState<string | null>(null)
 
   const post = route.postId ? blogPosts.find((p) => p.id === route.postId) ?? null : null
   const project = route.projectSlug
@@ -24,7 +25,13 @@ export default function App() {
   const view = isMobile ? (
     <MobileFeed route={route} navigate={navigate} theme={theme} onToggleTheme={toggleTheme} />
   ) : (
-    <CanvasView route={route} navigate={navigate} theme={theme} onToggleTheme={toggleTheme} />
+    <CanvasView
+      route={route}
+      navigate={navigate}
+      theme={theme}
+      onToggleTheme={toggleTheme}
+      shakeFrame={shakeFrame}
+    />
   )
 
   return (
@@ -38,6 +45,10 @@ export default function App() {
           onSuccess={() => {
             setUnlocked((prev) => new Set(prev).add(project.slug))
             setCelebrating(true)
+          }}
+          onTripleFail={() => {
+            setShakeFrame('projects')
+            window.setTimeout(() => setShakeFrame(null), 700)
           }}
           onClose={() => navigate('projects')}
         />

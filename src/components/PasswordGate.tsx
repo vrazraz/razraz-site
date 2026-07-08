@@ -2,9 +2,20 @@ import { useEffect, useRef, useState } from 'react'
 
 const NDA_PASSWORD = '1234'
 
-export function PasswordGate({ title, onSuccess, onClose }: { title: string; onSuccess: () => void; onClose: () => void }) {
+export function PasswordGate({
+  title,
+  onSuccess,
+  onClose,
+  onTripleFail,
+}: {
+  title: string
+  onSuccess: () => void
+  onClose: () => void
+  onTripleFail?: () => void
+}) {
   const [value, setValue] = useState('')
   const [error, setError] = useState(false)
+  const fails = useRef(0)
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -23,6 +34,8 @@ export function PasswordGate({ title, onSuccess, onClose }: { title: string; onS
       setError(true)
       setValue('')
       inputRef.current?.focus()
+      fails.current += 1
+      if (fails.current % 3 === 0) onTripleFail?.()
     }
   }
 

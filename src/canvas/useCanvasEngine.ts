@@ -36,6 +36,9 @@ export function useCanvasEngine(initialLayout: Record<string, FrameRect>) {
   const [transform, setTransformState] = useState<Transform>({ x: 0, y: 0, scale: 1 })
   const [moving, setMoving] = useState(false)
   const [spaceHeld, setSpaceHeld] = useState(false)
+  const [landedFrame, setLandedFrame] = useState<string | null>(null)
+  const [draggingFrame, setDraggingFrame] = useState<string | null>(null)
+  const landTimer = useRef(0)
 
   const rootRef = useRef<HTMLDivElement | null>(null)
   const transformRef = useRef(transform)
@@ -153,6 +156,12 @@ export function useCanvasEngine(initialLayout: Record<string, FrameRect>) {
         setTransform(target)
       } else {
         animateTo(target)
+        /* squash & stretch «приземление» фрейма в конце перелёта */
+        window.clearTimeout(landTimer.current)
+        landTimer.current = window.setTimeout(() => {
+          setLandedFrame(id)
+          landTimer.current = window.setTimeout(() => setLandedFrame(null), 550)
+        }, FLIGHT_MS - 80)
       }
     },
     [animateTo, fitTransform, setTransform, stopAnimations],
@@ -324,6 +333,7 @@ export function useCanvasEngine(initialLayout: Record<string, FrameRect>) {
           return
         e.stopPropagation()
         dragging.current = { id }
+        setDraggingFrame(id)
         lastPointer.current = { x: e.clientX, y: e.clientY, t: performance.now() }
         document.body.classList.add('no-select')
         ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
@@ -338,6 +348,7 @@ export function useCanvasEngine(initialLayout: Record<string, FrameRect>) {
       },
       onPointerUp: () => {
         dragging.current = null
+        setDraggingFrame(null)
         document.body.classList.remove('no-select')
       },
     }),
@@ -385,6 +396,8 @@ export function useCanvasEngine(initialLayout: Record<string, FrameRect>) {
     positions,
     moving,
     spaceHeld,
+    landedFrame,
+    draggingFrame,
     activeFrame,
     isFrameVisible,
     flyToFrame,

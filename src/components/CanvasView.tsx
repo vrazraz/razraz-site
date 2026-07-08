@@ -8,15 +8,17 @@ import { BottomNav } from './BottomNav'
 import { Minimap } from './Minimap'
 import { CanvasDecor, GrainOverlay, Vignette } from './Decor'
 import { CursorHint } from './CursorHint'
+import { ClickBurst } from './ClickBurst'
 
 interface Props {
   route: Route
   navigate: (section: string, postId?: string) => void
   theme: Theme
   onToggleTheme: () => void
+  shakeFrame?: string | null
 }
 
-export function CanvasView({ route, navigate, theme, onToggleTheme }: Props) {
+export function CanvasView({ route, navigate, theme, onToggleTheme, shakeFrame }: Props) {
   const engine = useCanvasEngine(layout)
   const started = useRef(false)
 
@@ -62,6 +64,7 @@ export function CanvasView({ route, navigate, theme, onToggleTheme }: Props) {
             rect={engine.positions[s.id]}
             active={engine.activeFrame === s.id}
             engine={engine}
+            shake={shakeFrame === s.id}
           >
             {s.render(navigate)}
           </FrameShell>
@@ -69,6 +72,7 @@ export function CanvasView({ route, navigate, theme, onToggleTheme }: Props) {
       </div>
       <Vignette />
       <CursorHint />
+      <ClickBurst />
       <BottomNav
         sections={SECTIONS}
         active={engine.activeFrame ?? route.section}

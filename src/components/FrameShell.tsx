@@ -8,15 +8,22 @@ interface Props {
   rect: FrameRect
   active: boolean
   engine: CanvasEngine
+  shake?: boolean
   children: ReactNode
 }
 
-export function FrameShell({ id, title, rect, active, engine, children }: Props) {
+export function FrameShell({ id, title, rect, active, engine, shake, children }: Props) {
   const dragHandlers = useMemo(() => engine.frameDragHandlers(id), [engine, id])
   const visible = engine.isFrameVisible(id)
+  const cls =
+    'frame' +
+    (active ? ' frame--active' : '') +
+    (engine.landedFrame === id ? ' frame--landed' : '') +
+    (engine.draggingFrame === id ? ' frame--dragging' : '') +
+    (shake ? ' frame--shake' : '')
   return (
     <section
-      className={'frame' + (active ? ' frame--active' : '')}
+      className={cls}
       style={{
         transform: `translate(${rect.x}px, ${rect.y}px)`,
         width: rect.w,
@@ -26,7 +33,8 @@ export function FrameShell({ id, title, rect, active, engine, children }: Props)
       {...dragHandlers}
     >
       <img
-        className="frame__lamp"
+        key={active ? 'on' : 'off'}
+        className={'frame__lamp' + (active ? ' frame__lamp--on' : '')}
         src={`${import.meta.env.BASE_URL}${active ? 'glight1.png' : 'glight2.png'}`}
         alt=""
         aria-hidden="true"

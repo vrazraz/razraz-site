@@ -342,6 +342,111 @@ a.chip {
   }
 }
 
+/* ===== Мультяшные анимации фреймов ===== */
+.frame {
+  transform-origin: center bottom;
+  transition:
+    scale 0.25s ease,
+    rotate 0.25s ease;
+}
+
+/* Приземление после перелёта: сплющивание и отпружинивание */
+.frame--landed {
+  animation: frame-land 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes frame-land {
+  0% {
+    scale: 1 1;
+  }
+  35% {
+    scale: 1.012 0.955;
+  }
+  70% {
+    scale: 0.995 1.02;
+  }
+  100% {
+    scale: 1 1;
+  }
+}
+
+/* Поднятие при захвате: чуть больше, наклон и «отъехавшая» тень */
+.frame--dragging {
+  scale: 1.012;
+  rotate: 0.5deg;
+  box-shadow: 11px 13px 0 var(--shadow-cel) !important;
+}
+
+/* Дрожь отказа после трёх неверных паролей */
+.frame--shake {
+  animation: frame-shake 0.6s ease;
+}
+
+@keyframes frame-shake {
+  15%,
+  45%,
+  75% {
+    rotate: -1deg;
+  }
+  30%,
+  60%,
+  90% {
+    rotate: 1deg;
+  }
+  100% {
+    rotate: 0deg;
+  }
+}
+
+/* Фонарь «прожигается» при включении: пара миганий и ровный свет */
+.frame__lamp--on {
+  animation: lamp-flicker 0.6s linear;
+}
+
+@keyframes lamp-flicker {
+  0% {
+    opacity: 0.35;
+  }
+  12% {
+    opacity: 1;
+  }
+  24% {
+    opacity: 0.25;
+  }
+  40% {
+    opacity: 1;
+  }
+  55% {
+    opacity: 0.5;
+  }
+  70%,
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Комикс-звезда в точке клика */
+.click-burst {
+  position: fixed;
+  z-index: 90;
+  translate: -50% -50%;
+  pointer-events: none;
+  animation: click-burst 0.45s ease-out forwards;
+}
+
+@keyframes click-burst {
+  0% {
+    scale: 0.3;
+    opacity: 1;
+    rotate: -20deg;
+  }
+  100% {
+    scale: 1.15;
+    opacity: 0;
+    rotate: 8deg;
+  }
+}
+
 /* ===== Подсказка у курсора ===== */
 .cursor-hint {
   position: fixed;
@@ -431,8 +536,25 @@ a.chip {
 
 @media (prefers-reduced-motion: reduce) {
   .hacker-bubble,
-  .hacker-bubble::before {
+  .hacker-bubble::before,
+  .frame--landed,
+  .frame--shake,
+  .frame__lamp--on,
+  .bottom-nav__item--active,
+  .nav-spark,
+  .click-burst,
+  .post-panel {
     animation: none;
+  }
+
+  .frame,
+  .minimap {
+    transition: opacity 0.3s;
+  }
+
+  .minimap {
+    translate: 0 0;
+    rotate: 0deg;
   }
 }
 
@@ -568,7 +690,7 @@ a.chip {
   width: min(480px, calc(100vw - 32px));
   display: flex;
   flex-direction: column;
-  animation: post-slide-in 0.25s cubic-bezier(0.34, 1.4, 0.64, 1);
+  animation: post-slide-in 0.45s cubic-bezier(0.22, 0.85, 0.35, 1.08);
 }
 
 /* Панель проекта — вдвое шире панели поста */
@@ -578,8 +700,7 @@ a.chip {
 
 @keyframes post-slide-in {
   from {
-    transform: translateX(40px);
-    opacity: 0;
+    transform: translateX(calc(100% + 32px));
   }
 }
 
@@ -661,6 +782,53 @@ a.chip {
   border-color: var(--outline);
   color: var(--on-accent);
   font-weight: 700;
+  animation: nav-jump 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes nav-jump {
+  30% {
+    translate: 0 -7px;
+    scale: 1.08 0.92;
+  }
+  60% {
+    translate: 0 1px;
+    scale: 0.96 1.05;
+  }
+  100% {
+    translate: 0 0;
+    scale: 1 1;
+  }
+}
+
+.bottom-nav__theme {
+  position: relative;
+}
+
+.nav-spark {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  translate: -50% 0;
+  pointer-events: none;
+  animation: nav-spark 0.6s ease-out forwards;
+}
+
+@keyframes nav-spark {
+  0% {
+    scale: 0.2;
+    opacity: 0;
+    translate: -50% 6px;
+    rotate: 0deg;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    scale: 1;
+    opacity: 0;
+    translate: -50% -18px;
+    rotate: 45deg;
+  }
 }
 
 .bottom-nav__sep {
@@ -692,12 +860,19 @@ a.chip {
   border-radius: 16px;
   box-shadow: 5px 5px 0 var(--shadow-cel);
   opacity: 0;
+  translate: 36px 36px;
+  rotate: 7deg;
   pointer-events: none;
-  transition: opacity 0.3s;
+  transition:
+    opacity 0.3s,
+    translate 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+    rotate 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .minimap--visible {
   opacity: 1;
+  translate: 0 0;
+  rotate: 0deg;
   pointer-events: auto;
 }
 
