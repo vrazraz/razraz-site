@@ -94,6 +94,7 @@ const SPRITES = [
   { src: 'decor-design.png', x: 1360, y: 640, w: 160, rot: 6 },
   { src: 'decor-folder.png', x: 300, y: 1640, w: 143, rot: 16 },
   { src: 'decor-lamp.png', x: 1780, y: 1240, w: 152, rot: -11 },
+  { src: 'decor-password.png', x: 2230, y: 130, w: 145, rot: -13 },
 ]
 
 const VECTOR_DECOR: { key: string; x: number; y: number; node: ReactNode }[] = [
