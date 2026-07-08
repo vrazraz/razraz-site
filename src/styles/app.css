@@ -38,7 +38,7 @@
 .frame__lamp {
   position: absolute;
   bottom: 100%;
-  right: 6px;
+  right: -8px;
   z-index: 1;
   width: 120px;
   transform: translateY(8px);
