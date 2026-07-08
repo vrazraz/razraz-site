@@ -2,6 +2,7 @@ import { marked } from 'marked'
 import siteJson from '../content/site.json'
 import layoutJson from '../content/layout.json'
 import blogJson from '../content/blog.json'
+import resumeJson from '../content/resume.json'
 
 export interface FrameRect {
   x: number
@@ -31,8 +32,16 @@ export interface ProjectDoc extends MarkdownDoc {
   cover?: string
 }
 
+export interface TimelineEntry {
+  period: string
+  role: string
+  company: string
+  details: string
+}
+
 export const site = siteJson
 export const layout: Record<string, FrameRect> = layoutJson
+export const resumeTimeline: TimelineEntry[] = resumeJson.timeline
 
 export const blogPosts: BlogPost[] = (blogJson.posts as BlogPost[]).filter((p) => !p.hidden)
 

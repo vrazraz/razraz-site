@@ -131,6 +131,77 @@ a.chip {
   margin-top: 18px;
 }
 
+/* ===== Таймлайн опыта ===== */
+.timeline {
+  list-style: none;
+  margin: 20px 0 6px;
+  padding: 0;
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: var(--outline);
+}
+
+.timeline__item {
+  position: relative;
+  padding: 0 0 22px 32px;
+}
+
+.timeline__item:last-child {
+  padding-bottom: 4px;
+}
+
+.timeline__dot {
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--panel-bg-2);
+  border: 2px solid var(--outline);
+  box-shadow: 2px 2px 0 var(--shadow-cel);
+}
+
+.timeline__item--current .timeline__dot {
+  background: var(--accent);
+  box-shadow: 2px 2px 0 var(--shadow-cel), 0 0 10px var(--accent-soft);
+}
+
+.timeline__period {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--label);
+  margin-bottom: 4px;
+}
+
+.timeline__item--current .timeline__period {
+  color: var(--accent-text);
+}
+
+.timeline__role {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.timeline__details {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
 /* ===== Проекты ===== */
 .project-grid {
   display: grid;
