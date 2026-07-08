@@ -52,7 +52,7 @@ export function CanvasView({ route, navigate, theme, onToggleTheme }: Props) {
         className="canvas-world"
         style={{ transform: `translate(${t.x}px, ${t.y}px) scale(${t.scale})` }}
       >
-        <CanvasDecor />
+        <CanvasDecor scale={t.scale} spaceHeld={engine.spaceHeld} />
         {SECTIONS.map((s) => (
           <FrameShell
             key={s.id}

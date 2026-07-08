@@ -532,8 +532,18 @@ a.chip {
 }
 
 .decor-sprite {
+  display: block;
   height: auto;
   filter: drop-shadow(3px 4px 0 var(--shadow-cel));
+}
+
+.decor--draggable {
+  pointer-events: auto;
+  cursor: grab;
+}
+
+.decor--draggable:active {
+  cursor: grabbing;
 }
 
 .grain {
