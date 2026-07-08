@@ -37,6 +37,7 @@ export function useIsMobile() {
 export interface Route {
   section: string
   postId: string | null
+  projectSlug: string | null
 }
 
 export const SECTION_IDS = ['about', 'projects', 'blog', 'resume'] as const
@@ -44,7 +45,11 @@ export const SECTION_IDS = ['about', 'projects', 'blog', 'resume'] as const
 function parseHash(): Route {
   const parts = window.location.hash.replace(/^#\/?/, '').split('/').filter(Boolean)
   const section = (SECTION_IDS as readonly string[]).includes(parts[0]) ? parts[0] : 'about'
-  return { section, postId: section === 'blog' && parts[1] ? parts[1] : null }
+  return {
+    section,
+    postId: section === 'blog' && parts[1] ? parts[1] : null,
+    projectSlug: section === 'projects' && parts[1] ? decodeURIComponent(parts[1]) : null,
+  }
 }
 
 export function useHashRoute() {
@@ -54,8 +59,8 @@ export function useHashRoute() {
     window.addEventListener('hashchange', onChange)
     return () => window.removeEventListener('hashchange', onChange)
   }, [])
-  const navigate = useCallback((section: string, postId?: string) => {
-    window.location.hash = postId ? `/${section}/${postId}` : `/${section}`
+  const navigate = useCallback((section: string, detail?: string) => {
+    window.location.hash = detail ? `/${section}/${encodeURIComponent(detail)}` : `/${section}`
   }, [])
   return { route, navigate }
 }

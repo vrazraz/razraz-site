@@ -12,7 +12,11 @@ export interface Section {
 
 export const SECTIONS: Section[] = [
   { id: 'about', label: 'Обо мне', render: () => <AboutFrame /> },
-  { id: 'projects', label: 'Проекты', render: () => <ProjectsFrame /> },
+  {
+    id: 'projects',
+    label: 'Проекты',
+    render: (navigate) => <ProjectsFrame onOpenProject={(slug) => navigate('projects', slug)} />,
+  },
   {
     id: 'blog',
     label: 'Блог',

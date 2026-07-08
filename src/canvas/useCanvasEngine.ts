@@ -249,6 +249,7 @@ export function useCanvasEngine(initialLayout: Record<string, FrameRect>) {
       panning.current = true
       velocity.current = { x: 0, y: 0 }
       lastPointer.current = { x: e.clientX, y: e.clientY, t: performance.now() }
+      document.body.classList.add('no-select')
       ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
     },
     [stopAnimations],
@@ -284,6 +285,7 @@ export function useCanvasEngine(initialLayout: Record<string, FrameRect>) {
   const onPointerUp = useCallback(() => {
     if (!panning.current) return
     panning.current = false
+    document.body.classList.remove('no-select')
     startInertia()
   }, [startInertia])
 
@@ -323,6 +325,7 @@ export function useCanvasEngine(initialLayout: Record<string, FrameRect>) {
         e.stopPropagation()
         dragging.current = { id }
         lastPointer.current = { x: e.clientX, y: e.clientY, t: performance.now() }
+        document.body.classList.add('no-select')
         ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
       },
       onPointerMove: (e: React.PointerEvent) => {
@@ -335,6 +338,7 @@ export function useCanvasEngine(initialLayout: Record<string, FrameRect>) {
       },
       onPointerUp: () => {
         dragging.current = null
+        document.body.classList.remove('no-select')
       },
     }),
     [moveFrame],

@@ -17,10 +17,10 @@
   --text-2: #a3a3ab;
   --text-3: #8a8a92;
   --label: #6d6d75;
-  --accent: #34d36b;
-  --accent-soft: rgba(52, 211, 107, 0.14);
-  --accent-text: #4ade80;
-  --on-accent: #0c1a10;
+  --accent: #c0fe05;
+  --accent-soft: rgba(192, 254, 5, 0.14);
+  --accent-text: #d0ff3f;
+  --on-accent: #1c2400;
   --shadow-cel: rgba(0, 0, 0, 0.55);
   --grain-opacity: 0.16;
   --vignette: rgba(0, 0, 0, 0.38);
@@ -42,10 +42,10 @@
   --text-2: #5c5c62;
   --text-3: #8e8e94;
   --label: #a8a8ae;
-  --accent: #2fbf5b;
-  --accent-soft: #e9f7ec;
-  --accent-text: #1f9d47;
-  --on-accent: #ffffff;
+  --accent: #c0fe05;
+  --accent-soft: #f3ffcf;
+  --accent-text: #5f8500;
+  --on-accent: #1c2400;
   --shadow-cel: rgba(28, 28, 32, 0.25);
   --grain-opacity: 0.1;
   --vignette: rgba(28, 28, 32, 0.14);
@@ -152,6 +152,11 @@ button:active,
   color: var(--on-accent);
   font-weight: 700;
   box-shadow: 2.5px 2.5px 0 var(--shadow-cel);
+}
+
+/* Во время пана/драга не выделяем текст */
+body.no-select {
+  user-select: none;
 }
 
 /* ===== Скроллбары внутри фреймов ===== */

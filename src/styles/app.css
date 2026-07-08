@@ -158,6 +158,18 @@ a.chip {
   color: var(--text);
 }
 
+.project-card--clickable:hover {
+  background: var(--control-bg);
+}
+
+/* В карточке списка описание обрезается — целиком оно в боковой панели */
+.md--clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .project-card__link {
   font-size: 12px;
   font-weight: 600;
@@ -221,6 +233,11 @@ a.chip {
   display: flex;
   flex-direction: column;
   animation: post-slide-in 0.25s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+/* Панель проекта — вдвое шире панели поста */
+.post-panel--wide {
+  width: min(960px, calc(100vw - 32px));
 }
 
 @keyframes post-slide-in {
