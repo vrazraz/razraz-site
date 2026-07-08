@@ -9,14 +9,15 @@ export function AboutFrame() {
     <>
       <header className="about-head">
         {avatarOk && (
-          <img
-            className="about-avatar"
-            src={`${import.meta.env.BASE_URL}avatar.webp`}
-            alt={site.name}
-            width={104}
-            height={104}
-            onError={() => setAvatarOk(false)}
-          />
+          <span className="about-avatar">
+            <img
+              src={`${import.meta.env.BASE_URL}avatar.webp`}
+              alt={site.name}
+              width={104}
+              height={104}
+              onError={() => setAvatarOk(false)}
+            />
+          </span>
         )}
         <div className="about-head__text">
           <h1 className="frame-title">

@@ -154,13 +154,23 @@ a.chip {
 
 .about-avatar {
   flex-shrink: 0;
+  display: block;
   width: 104px;
   height: 104px;
   border-radius: 50%;
-  object-fit: cover;
+  overflow: hidden;
   background: var(--control-bg);
   border: 2.5px solid var(--outline);
   box-shadow: 4px 4px 0 var(--shadow-cel);
+}
+
+/* Сдвиг лица чуть ниже, чтобы макушка не срезалась кругом */
+.about-avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translateY(7%) scale(1.15);
 }
 
 @media (max-width: 768px) {
