@@ -73,7 +73,13 @@ export function MobileFeed({ route, navigate, theme, onToggleTheme }: Props) {
         {SECTIONS.map((s) => (
           <div key={s.id} className="feed__slide">
             <section className="feed__section toon-panel" aria-label={s.label} aria-hidden={s.id !== route.section}>
-              <span className="frame__tag">● {s.label}</span>
+              <img
+                className="frame__lamp"
+                src={`${import.meta.env.BASE_URL}${s.id === route.section ? 'glight1.png' : 'glight2.png'}`}
+                alt=""
+                aria-hidden="true"
+                draggable={false}
+              />
               <div className="feed__body">{s.render(navigate)}</div>
             </section>
           </div>

@@ -25,7 +25,13 @@ export function FrameShell({ id, title, rect, active, engine, children }: Props)
       aria-label={title}
       {...dragHandlers}
     >
-      <span className={'frame__tag' + (active ? ' frame__tag--active' : '')}>● {title}</span>
+      <img
+        className="frame__lamp"
+        src={`${import.meta.env.BASE_URL}${active ? 'glight1.png' : 'glight2.png'}`}
+        alt=""
+        aria-hidden="true"
+        draggable={false}
+      />
       <div className="frame__body frame-scroll">{visible ? children : null}</div>
     </section>
   )
