@@ -38,10 +38,10 @@
 .frame__lamp {
   position: absolute;
   bottom: 100%;
-  right: 20px;
+  right: 6px;
   z-index: 1;
   width: 120px;
-  transform: translateY(14px);
+  transform: translateY(8px);
   user-select: none;
   pointer-events: none;
 }
