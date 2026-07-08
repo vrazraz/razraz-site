@@ -6,12 +6,14 @@ import { MobileFeed } from './components/MobileFeed'
 import { PostPanel } from './components/PostPanel'
 import { ProjectPanel } from './components/ProjectPanel'
 import { PasswordGate } from './components/PasswordGate'
+import { HackerBubble } from './components/HackerBubble'
 
 export default function App() {
   const { theme, toggleTheme } = useTheme()
   const { route, navigate } = useHashRoute()
   const isMobile = useIsMobile()
   const [unlocked, setUnlocked] = useState<ReadonlySet<string>>(new Set())
+  const [celebrating, setCelebrating] = useState(false)
 
   const post = route.postId ? blogPosts.find((p) => p.id === route.postId) ?? null : null
   const project = route.projectSlug
@@ -33,10 +35,14 @@ export default function App() {
       {project && locked && (
         <PasswordGate
           title={project.meta.title ?? project.slug}
-          onSuccess={() => setUnlocked((prev) => new Set(prev).add(project.slug))}
+          onSuccess={() => {
+            setUnlocked((prev) => new Set(prev).add(project.slug))
+            setCelebrating(true)
+          }}
           onClose={() => navigate('projects')}
         />
       )}
+      {celebrating && <HackerBubble onDone={() => setCelebrating(false)} />}
     </>
   )
 }

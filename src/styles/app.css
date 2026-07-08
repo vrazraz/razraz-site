@@ -365,6 +365,77 @@ a.chip {
   opacity: 0;
 }
 
+/* ===== Бабл «Ай да хакер!» после верного пароля ===== */
+.hacker-bubble {
+  position: fixed;
+  top: 50%;
+  right: calc(min(960px, 100vw - 32px) + 28px);
+  transform: translateY(-50%);
+  z-index: 60;
+  width: 250px;
+  pointer-events: none;
+  animation: hacker-bubble-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: opacity 0.6s ease;
+}
+
+.hacker-bubble img {
+  display: block;
+  width: 100%;
+  filter: drop-shadow(4px 5px 0 var(--shadow-cel));
+}
+
+/* Сияние как у декора: жёлтые вращающиеся лучи за баблом */
+.hacker-bubble::before {
+  content: '';
+  position: absolute;
+  inset: -56px;
+  z-index: -1;
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(
+      from 0deg,
+      rgba(255, 214, 40, 0.55) 0deg 9deg,
+      rgba(255, 214, 40, 0) 9deg 30deg
+    ),
+    radial-gradient(circle, rgba(255, 214, 40, 0.5) 0%, rgba(255, 214, 40, 0.15) 40%, transparent 65%);
+  -webkit-mask-image: radial-gradient(circle, #000 25%, transparent 70%);
+  mask-image: radial-gradient(circle, #000 25%, transparent 70%);
+  animation: decor-glow-spin 14s linear infinite;
+}
+
+.hacker-bubble--hide {
+  opacity: 0;
+}
+
+@keyframes hacker-bubble-pop {
+  from {
+    transform: translateY(-50%) scale(0.2) rotate(-12deg);
+  }
+}
+
+@media (max-width: 1100px) {
+  .hacker-bubble {
+    right: auto;
+    left: 50%;
+    top: 18%;
+    transform: translate(-50%, 0);
+    width: 200px;
+  }
+
+  @keyframes hacker-bubble-pop {
+    from {
+      transform: translate(-50%, 0) scale(0.2) rotate(-12deg);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hacker-bubble,
+  .hacker-bubble::before {
+    animation: none;
+  }
+}
+
 /* ===== Окно пароля NDA ===== */
 .pass-gate {
   position: fixed;
