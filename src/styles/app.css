@@ -534,9 +534,24 @@ a.chip {
   filter: drop-shadow(3px 4px 0 var(--shadow-cel));
 }
 
+/* Декор приглушён: полупрозрачный и ч/б. При ховере быстро оживает,
+   после ухода курсора медленно (30 с) гаснет обратно. */
 .decor--draggable {
   pointer-events: auto;
   cursor: grab;
+  opacity: 0.6;
+  filter: grayscale(1);
+  transition:
+    opacity 30s ease,
+    filter 30s ease;
+}
+
+.decor--draggable:hover {
+  opacity: 1;
+  filter: grayscale(0);
+  transition:
+    opacity 0.25s ease,
+    filter 0.25s ease;
 }
 
 .decor--draggable:active {
