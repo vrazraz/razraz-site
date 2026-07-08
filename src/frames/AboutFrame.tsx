@@ -1,15 +1,31 @@
+import { useState } from 'react'
 import { frameDocs, site } from '../content'
 
 export function AboutFrame() {
   const doc = frameDocs.about
   const title = (doc.meta.title ?? 'Обо мне').replace(/\.$/, '')
+  const [avatarOk, setAvatarOk] = useState(true)
   return (
     <>
-      <h1 className="frame-title">
-        {title}
-        <span className="accent">.</span>
-      </h1>
-      {doc.meta.subtitle && <p className="frame-subtitle">{doc.meta.subtitle}</p>}
+      <header className="about-head">
+        {avatarOk && (
+          <img
+            className="about-avatar"
+            src={`${import.meta.env.BASE_URL}avatar.webp`}
+            alt={site.name}
+            width={104}
+            height={104}
+            onError={() => setAvatarOk(false)}
+          />
+        )}
+        <div className="about-head__text">
+          <h1 className="frame-title">
+            {title}
+            <span className="accent">.</span>
+          </h1>
+          {doc.meta.subtitle && <p className="frame-subtitle">{doc.meta.subtitle}</p>}
+        </div>
+      </header>
       <div className="md" dangerouslySetInnerHTML={{ __html: doc.html }} />
       <div className="chips">
         {site.social.map((s) => (

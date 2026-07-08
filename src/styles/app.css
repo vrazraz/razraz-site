@@ -131,6 +131,49 @@ a.chip {
   margin-top: 18px;
 }
 
+/* ===== Шапка «Обо мне» ===== */
+.about-head {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-bottom: 18px;
+}
+
+.about-head__text {
+  min-width: 0;
+}
+
+.about-head .frame-title,
+.about-head .frame-subtitle {
+  margin-bottom: 0;
+}
+
+.about-head .frame-subtitle {
+  margin-top: 6px;
+}
+
+.about-avatar {
+  flex-shrink: 0;
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--control-bg);
+  border: 2.5px solid var(--outline);
+  box-shadow: 4px 4px 0 var(--shadow-cel);
+}
+
+@media (max-width: 768px) {
+  .about-head {
+    gap: 16px;
+  }
+
+  .about-avatar {
+    width: 76px;
+    height: 76px;
+  }
+}
+
 /* ===== Таймлайн опыта ===== */
 .timeline {
   list-style: none;
