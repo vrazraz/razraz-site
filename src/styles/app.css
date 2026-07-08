@@ -441,18 +441,23 @@ a.chip {
   gap: 4px;
   padding: 8px 10px;
   border-radius: 18px;
-  box-shadow: 5px 5px 0 var(--shadow-cel);
+  background: var(--nav-bg);
+  box-shadow: 5px 5px 0 var(--shadow-cel), 0 10px 32px rgba(0, 0, 0, 0.3);
 }
 
 .bottom-nav__item {
   background: none;
   border: 2px solid transparent;
   border-radius: 11px;
-  color: var(--text-2);
+  color: var(--nav-text-dim);
   font-family: var(--font-body);
   font-size: 13px;
   font-weight: 600;
   padding: 7px 14px;
+}
+
+.bottom-nav__item:hover {
+  color: var(--nav-text);
 }
 
 .bottom-nav__item--active {
@@ -465,16 +470,16 @@ a.chip {
 .bottom-nav__sep {
   width: 1px;
   height: 18px;
-  background: var(--border);
+  background: var(--nav-sep);
   margin: 0 4px;
 }
 
 .bottom-nav__zoom,
 .bottom-nav__theme {
-  background: var(--control-bg);
+  background: var(--nav-control-bg);
   border: 2px solid var(--outline);
   border-radius: 10px;
-  color: var(--text);
+  color: var(--nav-text);
   font-family: var(--font-body);
   font-size: 12px;
   font-weight: 600;

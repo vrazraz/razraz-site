@@ -26,6 +26,13 @@
   --vignette: rgba(0, 0, 0, 0.38);
   --decor-ink: #4b4b53;
   --decor-paper: #e8e6df;
+
+  /* инвертированная навигация: светлая панель на тёмном канвасе */
+  --nav-bg: #ececef;
+  --nav-text: #1c1c20;
+  --nav-text-dim: #55555e;
+  --nav-control-bg: #dcdce1;
+  --nav-sep: #c4c4cb;
 }
 
 :root[data-theme='light'] {
@@ -51,6 +58,13 @@
   --vignette: rgba(28, 28, 32, 0.14);
   --decor-ink: #b9b9be;
   --decor-paper: #3c3c40;
+
+  /* инвертированная навигация: тёмная панель на светлом канвасе */
+  --nav-bg: #1d1d21;
+  --nav-text: #f2f2f5;
+  --nav-text-dim: #a3a3ab;
+  --nav-control-bg: #2e2e34;
+  --nav-sep: #3a3a41;
 }
 
 /* ===== База ===== */
