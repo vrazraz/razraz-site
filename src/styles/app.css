@@ -554,24 +554,45 @@ a.chip {
     filter 0.25s ease;
 }
 
-/* Сияние за элементом: вспыхивает при ховере, гаснет за 5 с.
-   filter на обёртке создаёт stacking context, так что z-index: -1
-   остаётся внутри неё. */
+/* Сияние за элементом: жёлтые вращающиеся лучи поверх мягкого ореола.
+   Вспыхивает при ховере, гаснет за 5 с. filter на обёртке создаёт
+   stacking context, так что z-index: -1 остаётся внутри неё. */
 .decor--draggable::before {
   content: '';
   position: absolute;
-  inset: -28px;
+  inset: -52px;
   z-index: -1;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(192, 254, 5, 0.45) 0%, rgba(192, 254, 5, 0.12) 45%, transparent 70%);
+  background:
+    repeating-conic-gradient(
+      from 0deg,
+      rgba(255, 214, 40, 0.55) 0deg 9deg,
+      rgba(255, 214, 40, 0) 9deg 30deg
+    ),
+    radial-gradient(circle, rgba(255, 214, 40, 0.5) 0%, rgba(255, 214, 40, 0.15) 40%, transparent 65%);
+  -webkit-mask-image: radial-gradient(circle, #000 25%, transparent 70%);
+  mask-image: radial-gradient(circle, #000 25%, transparent 70%);
   opacity: 0;
   transition: opacity 5s ease;
+  animation: decor-glow-spin 14s linear infinite;
   pointer-events: none;
 }
 
 .decor--draggable:hover::before {
   opacity: 1;
   transition: opacity 0.25s ease;
+}
+
+@keyframes decor-glow-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .decor--draggable::before {
+    animation: none;
+  }
 }
 
 .decor--draggable:active {
