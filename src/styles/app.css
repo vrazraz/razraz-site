@@ -531,6 +531,11 @@ a.chip {
   pointer-events: none;
 }
 
+.decor-sprite {
+  height: auto;
+  filter: drop-shadow(3px 4px 0 var(--shadow-cel));
+}
+
 .grain {
   position: absolute;
   inset: 0;

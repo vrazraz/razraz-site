@@ -79,6 +79,32 @@ function MotionLines({ x, y }: { x: number; y: number }) {
   )
 }
 
+/** Растровый спрайт-виньетка. Прячется сам, пока файла нет в public/. */
+function Sprite({ src, x, y, w, rot }: { src: string; x: number; y: number; w: number; rot: number }) {
+  return (
+    <img
+      className="decor decor-sprite"
+      style={{ left: x, top: y, width: w, transform: `rotate(${rot}deg)` }}
+      src={`${import.meta.env.BASE_URL}${src}`}
+      alt=""
+      aria-hidden="true"
+      loading="lazy"
+      onError={(e) => {
+        ;(e.target as HTMLImageElement).style.display = 'none'
+      }}
+    />
+  )
+}
+
+/** Наклоны ±20°, размеры каждого спрайта варьируются в пределах ±10% от базовых 150px */
+const SPRITES = [
+  { src: 'decor-bulb.webp', x: 790, y: -40, w: 138, rot: -14 },
+  { src: 'decor-books.webp', x: 160, y: 655, w: 165, rot: 9 },
+  { src: 'decor-cursor.webp', x: 700, y: 1150, w: 150, rot: -18 },
+  { src: 'decor-design.webp', x: 1360, y: 640, w: 160, rot: 6 },
+  { src: 'decor-folder.webp', x: 300, y: 1640, w: 143, rot: 16 },
+]
+
 /** Виньетки между фреймами; координаты подобраны под content/layout.json */
 export function CanvasDecor() {
   return (
@@ -89,6 +115,9 @@ export function CanvasDecor() {
       <Star x={780} y={760} size={24} />
       <MotionLines x={-160} y={880} />
       <Star x={1850} y={560} size={28} accent />
+      {SPRITES.map((s) => (
+        <Sprite key={s.src} {...s} />
+      ))}
     </>
   )
 }
