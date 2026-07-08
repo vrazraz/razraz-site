@@ -289,6 +289,8 @@ a.chip {
   transform: scale(1.15);
 }
 
+/* Белые буквы с тёмной обводкой (обе ~30%) — читается и на светлом,
+   и на тёмном размытом фоне */
 .project-card__nda {
   position: absolute;
   inset: 0;
@@ -299,8 +301,9 @@ a.chip {
   font-size: 34px;
   font-weight: 800;
   letter-spacing: 4px;
-  color: var(--text);
-  opacity: 0.3;
+  color: rgba(255, 255, 255, 0.32);
+  -webkit-text-stroke: 1.5px rgba(12, 12, 14, 0.35);
+  text-shadow: 0 1px 6px rgba(12, 12, 14, 0.3);
   user-select: none;
   pointer-events: none;
 }
