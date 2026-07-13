@@ -143,6 +143,7 @@ const STD_SPRITES = [
   'decor-design.png',
   'decor-folder.png',
   'decor-lamp.png',
+  'decor-password.png',
 ]
 
 function scatter(): { src: string; style: CSSProperties; w: number; rot: number }[] {
