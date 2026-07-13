@@ -1,5 +1,5 @@
 /** Rubber-hose декор в мировых координатах + плёночные оверлеи в экранных. */
-import { useRef, useState, type ReactNode } from 'react'
+import { useRef, useState, type CSSProperties, type ReactNode } from 'react'
 
 function Star({ size = 34, accent = false }: { size?: number; accent?: boolean }) {
   return (
@@ -128,6 +128,37 @@ export function CanvasDecor({ scale, spaceHeld }: { scale: number; spaceHeld: bo
             }}
           />
         </Draggable>
+      ))}
+    </>
+  )
+}
+
+/** Декор стандартного режима: закреплён на фоне (fixed), по краям экрана */
+const FIXED_SPRITES: { src: string; style: CSSProperties; w: number; rot: number }[] = [
+  { src: 'decor-bulb.png', style: { left: '3%', top: '12%' }, w: 112, rot: -14 },
+  { src: 'decor-books.png', style: { left: '2.5%', bottom: '16%' }, w: 132, rot: 9 },
+  { src: 'decor-cursor.png', style: { right: '4%', top: '20%' }, w: 116, rot: -16 },
+  { src: 'decor-design.png', style: { left: '4%', top: '46%' }, w: 128, rot: 6 },
+  { src: 'decor-folder.png', style: { right: '5.5%', top: '52%' }, w: 114, rot: 16 },
+  { src: 'decor-lamp.png', style: { right: '3.5%', bottom: '10%' }, w: 122, rot: -9 },
+]
+
+export function StandardDecor() {
+  return (
+    <>
+      {FIXED_SPRITES.map((s) => (
+        <span key={s.src} className="std-decor-item" style={s.style} aria-hidden="true">
+          <img
+            className="decor-sprite"
+            style={{ width: s.w, transform: `rotate(${s.rot}deg)` }}
+            src={`${import.meta.env.BASE_URL}${s.src}`}
+            alt=""
+            draggable={false}
+            onError={(e) => {
+              ;((e.target as HTMLImageElement).parentElement as HTMLElement).style.display = 'none'
+            }}
+          />
+        </span>
       ))}
     </>
   )

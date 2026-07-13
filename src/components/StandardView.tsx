@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { SECTIONS } from '../sections'
 import type { Route, Theme } from '../hooks'
 import { BottomNav } from './BottomNav'
-import { GrainOverlay, Vignette } from './Decor'
+import { GrainOverlay, StandardDecor, Vignette } from './Decor'
 import { ViewSwitcher, type ViewMode } from './ViewSwitcher'
 
 interface Props {
@@ -80,6 +80,7 @@ export function StandardView({ route, navigate, theme, onToggleTheme, viewMode, 
   return (
     <div ref={rootRef} className="standard" onScroll={onScroll}>
       <GrainOverlay />
+      <StandardDecor />
       <div className="standard__inner">
         {SECTIONS.map((s) => (
           <section

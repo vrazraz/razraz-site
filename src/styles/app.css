@@ -41,7 +41,7 @@
   right: -24px;
   z-index: 1;
   width: 120px;
-  transform: translateY(24px);
+  transform: translateY(40px);
   user-select: none;
   pointer-events: none;
 }
@@ -144,8 +144,42 @@ a.chip {
   margin-top: 6px;
 }
 
-.about-avatar {
+/* Обёртка с сиянием как у декора: круг аватара обрезает содержимое,
+   поэтому лучи живут на внешнем слое */
+.about-avatar-wrap {
+  position: relative;
   flex-shrink: 0;
+  display: block;
+  isolation: isolate;
+}
+
+.about-avatar-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -44px;
+  z-index: -1;
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(
+      from 0deg,
+      rgba(255, 214, 40, 0.55) 0deg 9deg,
+      rgba(255, 214, 40, 0) 9deg 30deg
+    ),
+    radial-gradient(circle, rgba(255, 214, 40, 0.5) 0%, rgba(255, 214, 40, 0.15) 40%, transparent 65%);
+  -webkit-mask-image: radial-gradient(circle, #000 25%, transparent 70%);
+  mask-image: radial-gradient(circle, #000 25%, transparent 70%);
+  opacity: 0;
+  transition: opacity 5s ease;
+  animation: decor-glow-spin 14s linear infinite;
+  pointer-events: none;
+}
+
+.about-avatar-wrap:hover::before {
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+.about-avatar {
   display: block;
   width: 104px;
   height: 104px;
@@ -855,6 +889,7 @@ a.chip {
 }
 
 /* ===== Segmented control режима отображения ===== */
+/* Всегда в тёмных тонах, независимо от темы */
 .view-switcher {
   position: fixed;
   top: 20px;
@@ -866,7 +901,7 @@ a.chip {
   gap: 4px;
   padding: 6px;
   border-radius: 14px;
-  background: var(--nav-bg);
+  background: #1d1d21;
   box-shadow: 5px 5px 0 var(--shadow-cel), 0 10px 32px rgba(0, 0, 0, 0.3);
 }
 
@@ -876,8 +911,8 @@ a.chip {
   bottom: 6px;
   left: 6px;
   width: calc(50% - 8px);
-  background: var(--nav-control-bg);
-  border: 2px solid var(--outline);
+  background: #2e2e34;
+  border: 2px solid #0c0c0e;
   border-radius: 9px;
   transition: translate 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -892,7 +927,7 @@ a.chip {
   background: none;
   border: none;
   border-radius: 9px;
-  color: var(--nav-text-dim);
+  color: #a3a3ab;
   font-family: var(--font-body);
   font-size: 12px;
   font-weight: 600;
@@ -902,11 +937,11 @@ a.chip {
 }
 
 .view-switcher__seg:hover {
-  color: var(--nav-text);
+  color: #f2f2f5;
 }
 
 .view-switcher__seg--active {
-  color: var(--nav-text);
+  color: #f2f2f5;
   font-weight: 700;
 }
 
@@ -975,9 +1010,9 @@ a.chip {
 
 /* Декор приглушён: полупрозрачный и ч/б. При ховере быстро оживает,
    после ухода курсора медленно (30 с) гаснет обратно. */
-.decor--draggable {
+.decor--draggable,
+.std-decor-item {
   pointer-events: auto;
-  cursor: grab;
   opacity: 0.6;
   filter: grayscale(1);
   transition:
@@ -985,7 +1020,24 @@ a.chip {
     filter 30s ease;
 }
 
-.decor--draggable:hover {
+.decor--draggable {
+  cursor: grab;
+}
+
+/* Декор стандартного режима закреплён на фоне */
+.std-decor-item {
+  position: fixed;
+  z-index: 0;
+}
+
+@media (max-width: 1120px) {
+  .std-decor-item {
+    display: none;
+  }
+}
+
+.decor--draggable:hover,
+.std-decor-item:hover {
   opacity: 1;
   filter: grayscale(0);
   transition:
@@ -996,7 +1048,8 @@ a.chip {
 /* Сияние за элементом: жёлтые вращающиеся лучи поверх мягкого ореола.
    Вспыхивает при ховере, гаснет за 5 с. filter на обёртке создаёт
    stacking context, так что z-index: -1 остаётся внутри неё. */
-.decor--draggable::before {
+.decor--draggable::before,
+.std-decor-item::before {
   content: '';
   position: absolute;
   inset: -52px;
@@ -1017,7 +1070,8 @@ a.chip {
   pointer-events: none;
 }
 
-.decor--draggable:hover::before {
+.decor--draggable:hover::before,
+.std-decor-item:hover::before {
   opacity: 1;
   transition: opacity 0.25s ease;
 }
@@ -1029,7 +1083,9 @@ a.chip {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .decor--draggable::before {
+  .decor--draggable::before,
+  .std-decor-item::before,
+  .about-avatar-wrap::before {
     animation: none;
   }
 }
