@@ -3,17 +3,19 @@ import { SECTIONS } from '../sections'
 import type { Route, Theme } from '../hooks'
 import { BottomNav } from './BottomNav'
 import { GrainOverlay, Vignette } from './Decor'
+import { ViewSwitcher, type ViewMode } from './ViewSwitcher'
 
 interface Props {
   route: Route
   navigate: (section: string, postId?: string) => void
   theme: Theme
   onToggleTheme: () => void
-  onToggleView: () => void
+  viewMode: ViewMode
+  onChangeView: (m: ViewMode) => void
 }
 
 /** Стандартный режим: обычная вертикальная страница вместо канваса */
-export function StandardView({ route, navigate, theme, onToggleTheme, onToggleView }: Props) {
+export function StandardView({ route, navigate, theme, onToggleTheme, viewMode, onChangeView }: Props) {
   const refs = useRef<Record<string, HTMLElement | null>>({})
   const rootRef = useRef<HTMLDivElement | null>(null)
   const [visibleId, setVisibleId] = useState(route.section)
@@ -101,6 +103,7 @@ export function StandardView({ route, navigate, theme, onToggleTheme, onToggleVi
         ))}
       </div>
       <Vignette />
+      <ViewSwitcher mode={viewMode} onChange={onChangeView} />
       <BottomNav
         sections={SECTIONS}
         active={visibleId}
@@ -113,8 +116,6 @@ export function StandardView({ route, navigate, theme, onToggleTheme, onToggleVi
         }}
         theme={theme}
         onToggleTheme={onToggleTheme}
-        viewMode="standard"
-        onToggleView={onToggleView}
       />
     </div>
   )

@@ -19,12 +19,10 @@ export default function App() {
   const [viewMode, setViewMode] = useState<'canvas' | 'standard'>(() =>
     localStorage.getItem('view-mode') === 'standard' ? 'standard' : 'canvas',
   )
-  const toggleView = () =>
-    setViewMode((m) => {
-      const next = m === 'canvas' ? 'standard' : 'canvas'
-      localStorage.setItem('view-mode', next)
-      return next
-    })
+  const changeView = (next: 'canvas' | 'standard') => {
+    localStorage.setItem('view-mode', next)
+    setViewMode(next)
+  }
 
   const post = route.postId ? blogPosts.find((p) => p.id === route.postId) ?? null : null
   const project = route.projectSlug
@@ -41,7 +39,8 @@ export default function App() {
       theme={theme}
       onToggleTheme={toggleTheme}
       shakeFrame={shakeFrame}
-      onToggleView={toggleView}
+      viewMode={viewMode}
+      onChangeView={changeView}
     />
   ) : (
     <StandardView
@@ -49,7 +48,8 @@ export default function App() {
       navigate={navigate}
       theme={theme}
       onToggleTheme={toggleTheme}
-      onToggleView={toggleView}
+      viewMode={viewMode}
+      onChangeView={changeView}
     />
   )
 

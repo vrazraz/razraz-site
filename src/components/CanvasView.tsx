@@ -9,6 +9,7 @@ import { Minimap } from './Minimap'
 import { CanvasDecor, GrainOverlay, Vignette } from './Decor'
 import { CursorHint } from './CursorHint'
 import { ClickBurst } from './ClickBurst'
+import { ViewSwitcher, type ViewMode } from './ViewSwitcher'
 
 interface Props {
   route: Route
@@ -16,10 +17,11 @@ interface Props {
   theme: Theme
   onToggleTheme: () => void
   shakeFrame?: string | null
-  onToggleView?: () => void
+  viewMode: ViewMode
+  onChangeView: (m: ViewMode) => void
 }
 
-export function CanvasView({ route, navigate, theme, onToggleTheme, shakeFrame, onToggleView }: Props) {
+export function CanvasView({ route, navigate, theme, onToggleTheme, shakeFrame, viewMode, onChangeView }: Props) {
   const engine = useCanvasEngine(layout)
   const started = useRef(false)
 
@@ -74,6 +76,7 @@ export function CanvasView({ route, navigate, theme, onToggleTheme, shakeFrame, 
       <Vignette />
       <CursorHint />
       <ClickBurst />
+      <ViewSwitcher mode={viewMode} onChange={onChangeView} />
       <BottomNav
         sections={SECTIONS}
         active={engine.activeFrame ?? route.section}
@@ -82,8 +85,6 @@ export function CanvasView({ route, navigate, theme, onToggleTheme, shakeFrame, 
         onToggleTheme={onToggleTheme}
         scale={t.scale}
         onResetZoom={engine.resetZoom}
-        viewMode="canvas"
-        onToggleView={onToggleView}
       />
       <Minimap engine={engine} />
     </div>
