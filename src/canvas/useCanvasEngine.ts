@@ -21,7 +21,7 @@ function clampScale(s: number) {
 }
 
 /** Каково пересечение фрейма с вьюпортом (в px² экрана) */
-function visibleArea(rect: FrameRect, t: Transform, vw: number, vh: number) {
+export function visibleArea(rect: FrameRect, t: Transform, vw: number, vh: number) {
   const left = rect.x * t.scale + t.x
   const top = rect.y * t.scale + t.y
   const right = left + rect.w * t.scale

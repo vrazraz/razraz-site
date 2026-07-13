@@ -22,9 +22,7 @@ export function ResumeFrame() {
         ))}
       </ol>
       <div className="md" dangerouslySetInnerHTML={{ __html: doc.html }} />
-      <a className="chip chip--accent interactive resume-download" href={`${import.meta.env.BASE_URL}cv.pdf`} download>
-        Скачать PDF
-      </a>
+      {/* Кнопка «Скачать PDF» скрыта, пока в public/ не появится cv.pdf */}
     </>
   )
 }

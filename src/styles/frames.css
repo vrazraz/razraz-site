@@ -1,0 +1,506 @@
+/* ===== Канвас ===== */
+.canvas-root {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background-color: var(--canvas-bg);
+  background-image: radial-gradient(var(--canvas-dot) 1.3px, transparent 1.3px);
+  touch-action: none;
+}
+
+.canvas-root--pan {
+  cursor: grab;
+}
+
+.canvas-world {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+/* ===== Фрейм ===== */
+.frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--panel-bg);
+  border: 2.5px solid var(--outline);
+  border-radius: 20px;
+  box-shadow: 7px 7px 0 var(--shadow-cel);
+}
+
+/* Фонарь-индикатор: прилегает к верхней кромке фрейма справа.
+   Отрицательный сдвиг компенсирует прозрачные поля PNG. */
+.frame__lamp {
+  position: absolute;
+  bottom: 100%;
+  right: -24px;
+  z-index: 1;
+  width: 120px;
+  transform: translateY(40px);
+  user-select: none;
+  pointer-events: none;
+}
+
+.frame__body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 30px 32px;
+  border-radius: 17px;
+}
+
+/* ===== Типографика фреймов ===== */
+.frame-title {
+  font-size: 34px;
+  color: var(--text);
+}
+
+.frame-title--md {
+  font-size: 26px;
+}
+
+.frame-title .accent {
+  color: var(--accent);
+}
+
+.frame-subtitle {
+  margin: 4px 0 0;
+  color: var(--text-3);
+  font-size: 14px;
+}
+
+.md {
+  margin-top: 16px;
+  color: var(--text-2);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.md h2 {
+  font-size: 17px;
+  color: var(--text);
+  margin: 18px 0 6px;
+}
+
+.md p {
+  margin: 0 0 10px;
+}
+
+.md img,
+.md video {
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+/* ===== Чипы ===== */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.chips--sm {
+  margin-top: 10px;
+}
+
+.chip--sm {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-width: 1.5px;
+}
+
+a.chip {
+  text-decoration: none;
+}
+
+.resume-download {
+  margin-top: 18px;
+}
+
+/* ===== Шапка «Обо мне» ===== */
+.about-head {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-bottom: 18px;
+}
+
+.about-head__text {
+  min-width: 0;
+}
+
+.about-head .frame-title,
+.about-head .frame-subtitle {
+  margin-bottom: 0;
+}
+
+.about-head .frame-subtitle {
+  margin-top: 6px;
+}
+
+/* Обёртка с сиянием как у декора: круг аватара обрезает содержимое,
+   поэтому лучи живут на внешнем слое */
+.about-avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+  display: block;
+  isolation: isolate;
+}
+
+.about-avatar-wrap {
+  --ray-inset: -44px;
+}
+
+.about-avatar {
+  display: block;
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--control-bg);
+  border: 2.5px solid var(--outline);
+  box-shadow: 4px 4px 0 var(--shadow-cel);
+}
+
+/* Сдвиг лица чуть ниже, чтобы макушка не срезалась кругом */
+.about-avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translateY(7%) scale(1.15);
+}
+
+@media (max-width: 768px) {
+  .about-head {
+    gap: 16px;
+  }
+
+  .about-avatar {
+    width: 76px;
+    height: 76px;
+  }
+}
+
+/* ===== Таймлайн опыта ===== */
+.timeline {
+  list-style: none;
+  margin: 20px 0 6px;
+  padding: 0;
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: var(--outline);
+}
+
+.timeline__item {
+  position: relative;
+  padding: 0 0 22px 32px;
+}
+
+.timeline__item:last-child {
+  padding-bottom: 4px;
+}
+
+.timeline__dot {
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--panel-bg-2);
+  border: 2px solid var(--outline);
+  box-shadow: 2px 2px 0 var(--shadow-cel);
+}
+
+.timeline__item--current .timeline__dot {
+  background: var(--accent);
+  box-shadow: 2px 2px 0 var(--shadow-cel), 0 0 10px var(--accent-soft);
+}
+
+.timeline__period {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--label);
+  margin-bottom: 4px;
+}
+
+.timeline__item--current .timeline__period {
+  color: var(--accent-text);
+}
+
+.timeline__role {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.timeline__details {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+/* ===== Проекты ===== */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.project-card {
+  background: var(--panel-bg-2);
+  border: 2px solid var(--outline);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.project-card__cover {
+  aspect-ratio: 16 / 10;
+  background: var(--control-bg);
+  border-bottom: 2px solid var(--outline);
+}
+
+.project-card__cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Превью кейсов под NDA: блюр + водяная надпись */
+.project-card__cover--nda {
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card__cover--nda img {
+  filter: blur(14px) saturate(0.8);
+  transform: scale(1.15);
+}
+
+/* Белые буквы с тёмной обводкой — читается на любом размытом фоне */
+.project-card__nda {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: #ffffff;
+  -webkit-text-stroke: 2px #0c0c0e;
+  paint-order: stroke fill;
+  text-shadow: 0 2px 8px rgba(12, 12, 14, 0.35);
+  user-select: none;
+  pointer-events: none;
+}
+
+.project-card__body {
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.project-card__body h3 {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--text);
+}
+
+.project-card__year {
+  flex-shrink: 0;
+  color: var(--text-3);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.projects-more {
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--text-2);
+}
+
+.project-card--clickable {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.project-card--clickable:hover {
+  background: var(--control-bg);
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 var(--shadow-cel);
+}
+
+.project-card--clickable:active {
+  transform: translateY(0) scale(0.98);
+}
+
+@media (max-width: 768px) {
+  .project-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ===== Мультяшные анимации фреймов ===== */
+.frame {
+  transform-origin: center bottom;
+  transition:
+    scale 0.25s ease,
+    rotate 0.25s ease;
+}
+
+/* Приземление после перелёта: сплющивание и отпружинивание */
+.frame--landed {
+  animation: frame-land 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes frame-land {
+  0% {
+    scale: 1 1;
+  }
+  35% {
+    scale: 1.012 0.955;
+  }
+  70% {
+    scale: 0.995 1.02;
+  }
+  100% {
+    scale: 1 1;
+  }
+}
+
+/* Поднятие при захвате: чуть больше, наклон и «отъехавшая» тень */
+.frame--dragging {
+  scale: 1.012;
+  rotate: 0.5deg;
+  box-shadow: 11px 13px 0 var(--shadow-cel) !important;
+}
+
+/* Дрожь отказа после трёх неверных паролей */
+.frame--shake {
+  animation: frame-shake 0.6s ease;
+}
+
+@keyframes frame-shake {
+  15%,
+  45%,
+  75% {
+    rotate: -1deg;
+  }
+  30%,
+  60%,
+  90% {
+    rotate: 1deg;
+  }
+  100% {
+    rotate: 0deg;
+  }
+}
+
+/* Фонари слегка качаются; при движении канваса — вздрагивают сильнее */
+.frame__lamp {
+  transform-origin: 50% 0;
+  --sway-amp: 1.5deg;
+  animation: lamp-sway 6s ease-in-out infinite;
+}
+
+@keyframes lamp-sway {
+  0%,
+  100% {
+    rotate: calc(var(--sway-amp) * -1);
+  }
+  50% {
+    rotate: var(--sway-amp);
+  }
+}
+
+.canvas-root--moving .frame__lamp {
+  --sway-amp: 4deg;
+  animation-duration: 1s;
+}
+
+/* Фонарь «прожигается» при включении: пара миганий и ровный свет */
+.frame__lamp--on {
+  animation:
+    lamp-flicker 0.6s linear,
+    lamp-sway 6s ease-in-out infinite;
+}
+
+.canvas-root--moving .frame__lamp--on {
+  animation-duration: 0.6s, 1s;
+}
+
+@keyframes lamp-flicker {
+  0% {
+    opacity: 0.35;
+  }
+  12% {
+    opacity: 1;
+  }
+  24% {
+    opacity: 0.25;
+  }
+  40% {
+    opacity: 1;
+  }
+  55% {
+    opacity: 0.5;
+  }
+  70%,
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Комикс-звезда в точке клика */
+.click-burst {
+  position: fixed;
+  z-index: 90;
+  translate: -50% -50%;
+  pointer-events: none;
+  animation: click-burst 0.45s ease-out forwards;
+}
+
+@keyframes click-burst {
+  0% {
+    scale: 0.3;
+    opacity: 1;
+    rotate: -20deg;
+  }
+  100% {
+    scale: 1.15;
+    opacity: 0;
+    rotate: 8deg;
+  }
+}
+

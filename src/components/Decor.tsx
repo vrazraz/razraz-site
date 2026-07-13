@@ -56,7 +56,7 @@ function Draggable({
 
   return (
     <div
-      className="decor decor--draggable"
+      className="decor decor--draggable ray-glow"
       style={{ left: pos.x, top: pos.y }}
       onPointerDown={(e) => {
         if (e.button !== 0 || spaceHeld) return
@@ -173,7 +173,7 @@ export function StandardDecor() {
   return (
     <>
       {sprites.map((s) => (
-        <span key={s.src} className="std-decor-item" style={s.style} aria-hidden="true">
+        <span key={s.src} className="std-decor-item ray-glow" style={s.style} aria-hidden="true">
           <img
             className="decor-sprite"
             style={{ width: s.w, transform: `rotate(${s.rot}deg)` }}

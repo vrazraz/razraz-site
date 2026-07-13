@@ -1,7 +1,19 @@
 import { useEffect } from 'react'
 import type { ProjectDoc } from '../content'
 
-export function ProjectPanel({ project, onClose }: { project: ProjectDoc; onClose: () => void }) {
+export function ProjectPanel({
+  project,
+  prevSlug,
+  nextSlug,
+  onOpen,
+  onClose,
+}: {
+  project: ProjectDoc
+  prevSlug?: string
+  nextSlug?: string
+  onOpen: (slug: string) => void
+  onClose: () => void
+}) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
@@ -23,9 +35,29 @@ export function ProjectPanel({ project, onClose }: { project: ProjectDoc; onClos
               </span>
             )}
           </div>
-          <button className="post-panel__close" onClick={onClose} aria-label="Закрыть">
-            ✕
-          </button>
+          <div className="post-panel__actions">
+            <button
+              className="post-panel__close"
+              disabled={!prevSlug}
+              onClick={() => prevSlug && onOpen(prevSlug)}
+              aria-label="Предыдущий кейс"
+              title="Предыдущий кейс"
+            >
+              ‹
+            </button>
+            <button
+              className="post-panel__close"
+              disabled={!nextSlug}
+              onClick={() => nextSlug && onOpen(nextSlug)}
+              aria-label="Следующий кейс"
+              title="Следующий кейс"
+            >
+              ›
+            </button>
+            <button className="post-panel__close" onClick={onClose} aria-label="Закрыть">
+              ✕
+            </button>
+          </div>
         </header>
         <div className="post-panel__body frame-scroll">
           <div className="md" dangerouslySetInnerHTML={{ __html: project.html }} />

@@ -1,0 +1,119 @@
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { SECTIONS } from '../sections'
+import { blogPosts, projects } from '../content'
+
+interface Item {
+  id: string
+  label: string
+  hint: string
+  run: () => void
+}
+
+/** Командная палитра (Cmd/Ctrl+K): быстрый переход к разделам, кейсам и постам */
+export function CommandPalette({ navigate }: { navigate: (section: string, detail?: string) => void }) {
+  const [open, setOpen] = useState(false)
+  const [query, setQuery] = useState('')
+  const [index, setIndex] = useState(0)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const items = useMemo<Item[]>(
+    () => [
+      ...SECTIONS.map((s) => ({
+        id: 'section-' + s.id,
+        label: s.label,
+        hint: 'Раздел',
+        run: () => navigate(s.id),
+      })),
+      ...projects.map((p) => ({
+        id: 'project-' + p.slug,
+        label: p.meta.title ?? p.slug,
+        hint: p.nda ? 'Кейс · NDA' : 'Кейс',
+        run: () => navigate('projects', p.slug),
+      })),
+      ...blogPosts.map((b) => ({
+        id: 'post-' + b.id,
+        label: b.title,
+        hint: 'Пост',
+        run: () => navigate('blog', b.id),
+      })),
+    ],
+    [navigate],
+  )
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    const pool = q ? items.filter((i) => i.label.toLowerCase().includes(q)) : items
+    return pool.slice(0, 9)
+  }, [items, query])
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault()
+        setOpen((o) => !o)
+        setQuery('')
+        setIndex(0)
+      } else if (e.key === 'Escape') {
+        setOpen(false)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
+  useEffect(() => {
+    if (open) inputRef.current?.focus()
+  }, [open])
+
+  useEffect(() => setIndex(0), [query])
+
+  if (!open) return null
+
+  const run = (item?: Item) => {
+    if (!item) return
+    setOpen(false)
+    item.run()
+  }
+
+  return (
+    <>
+      <div className="post-backdrop" onClick={() => setOpen(false)} />
+      <div className="palette toon-panel" role="dialog" aria-label="Быстрый переход">
+        <input
+          ref={inputRef}
+          className="palette__input"
+          placeholder="Куда перейти? Разделы, кейсы, посты…"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'ArrowDown') {
+              e.preventDefault()
+              setIndex((i) => Math.min(filtered.length - 1, i + 1))
+            } else if (e.key === 'ArrowUp') {
+              e.preventDefault()
+              setIndex((i) => Math.max(0, i - 1))
+            } else if (e.key === 'Enter') {
+              run(filtered[index])
+            }
+          }}
+        />
+        <ul className="palette__list">
+          {filtered.map((it, i) => (
+            <li key={it.id}>
+              <button
+                className={'palette__item' + (i === index ? ' palette__item--active' : '')}
+                onMouseEnter={() => setIndex(i)}
+                onClick={() => run(it)}
+              >
+                <span className="palette__label">{it.label}</span>
+                <span className="palette__hint">{it.hint}</span>
+              </button>
+            </li>
+          ))}
+          {filtered.length === 0 && <li className="palette__empty">Ничего не нашлось</li>}
+        </ul>
+        <div className="palette__foot">↑↓ выбор · Enter перейти · Esc закрыть</div>
+      </div>
+    </>
+  )
+}

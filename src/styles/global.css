@@ -67,6 +67,37 @@
   --nav-sep: #3a3a41;
 }
 
+/* ===== Селекция и скроллбары в стиле «дизайн-инструмента» ===== */
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  border-width: 2px;
+}
+
 /* ===== База ===== */
 *,
 *::before,

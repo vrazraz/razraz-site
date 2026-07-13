@@ -47,7 +47,11 @@ export function CanvasView({ route, navigate, theme, onToggleTheme, shakeFrame, 
   return (
     <div
       ref={engine.rootRef}
-      className={'canvas-root' + (engine.spaceHeld ? ' canvas-root--pan' : '')}
+      className={
+        'canvas-root' +
+        (engine.spaceHeld ? ' canvas-root--pan' : '') +
+        (engine.moving ? ' canvas-root--moving' : '')
+      }
       style={{
         backgroundPosition: `${t.x}px ${t.y}px`,
         backgroundSize: `${dot}px ${dot}px`,

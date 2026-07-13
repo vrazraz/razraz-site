@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { blogPosts, projects } from './content'
+import { useEffect, useState } from 'react'
+import { blogPosts, projects, site } from './content'
 import { useHashRoute, useIsMobile, useTheme } from './hooks'
 import { CanvasView } from './components/CanvasView'
 import { StandardView } from './components/StandardView'
@@ -8,6 +8,33 @@ import { PostPanel } from './components/PostPanel'
 import { ProjectPanel } from './components/ProjectPanel'
 import { PasswordGate } from './components/PasswordGate'
 import { HackerBubble } from './components/HackerBubble'
+import { CommandPalette } from './components/CommandPalette'
+import { IrisIn } from './components/IrisIn'
+
+/* Яндекс.Метрика подключается, только если в site.json задан metrikaId */
+declare global {
+  interface Window {
+    ym?: { (...args: unknown[]): void; a?: unknown[]; l?: number }
+  }
+}
+
+function useMetrika(id: string | undefined) {
+  useEffect(() => {
+    if (!id) return
+    const w = window
+    w.ym =
+      w.ym ||
+      function (...args: unknown[]) {
+        ;(w.ym!.a = w.ym!.a || []).push(args)
+      }
+    w.ym.l = new Date().getTime()
+    const s = document.createElement('script')
+    s.async = true
+    s.src = 'https://mc.yandex.ru/metrika/tag.js'
+    document.head.appendChild(s)
+    w.ym(Number(id), 'init', { clickmap: true, trackLinks: true, accurateTrackBounce: true })
+  }, [id])
+}
 
 export default function App() {
   const { theme, toggleTheme } = useTheme()
@@ -24,10 +51,13 @@ export default function App() {
     setViewMode(next)
   }
 
+  useMetrika(site.metrikaId || undefined)
+
   const post = route.postId ? blogPosts.find((p) => p.id === route.postId) ?? null : null
-  const project = route.projectSlug
-    ? projects.find((p) => p.slug === route.projectSlug) ?? null
-    : null
+  const projectIndex = route.projectSlug
+    ? projects.findIndex((p) => p.slug === route.projectSlug)
+    : -1
+  const project = projectIndex >= 0 ? projects[projectIndex] : null
   const locked = !!project && project.nda && !unlocked.has(project.slug)
 
   const view = isMobile ? (
@@ -57,7 +87,15 @@ export default function App() {
     <>
       {view}
       {post && <PostPanel post={post} theme={theme} onClose={() => navigate('blog')} />}
-      {project && !locked && <ProjectPanel project={project} onClose={() => navigate('projects')} />}
+      {project && !locked && (
+        <ProjectPanel
+          project={project}
+          prevSlug={projectIndex > 0 ? projects[projectIndex - 1].slug : undefined}
+          nextSlug={projectIndex < projects.length - 1 ? projects[projectIndex + 1].slug : undefined}
+          onOpen={(slug) => navigate('projects', slug)}
+          onClose={() => navigate('projects')}
+        />
+      )}
       {project && locked && (
         <PasswordGate
           title={project.meta.title ?? project.slug}
@@ -73,6 +111,8 @@ export default function App() {
         />
       )}
       {celebrating && <HackerBubble onDone={() => setCelebrating(false)} />}
+      <CommandPalette navigate={navigate} />
+      <IrisIn />
     </>
   )
 }

@@ -1,0 +1,171 @@
+/* ===== Декор ===== */
+.decor {
+  position: absolute;
+  pointer-events: none;
+}
+
+.decor-sprite {
+  display: block;
+  height: auto;
+  filter: drop-shadow(3px 4px 0 var(--shadow-cel));
+}
+
+/* Декор приглушён: полупрозрачный и ч/б. При ховере быстро оживает,
+   после ухода курсора медленно (30 с) гаснет обратно. */
+.decor--draggable,
+.std-decor-item {
+  pointer-events: auto;
+  opacity: 0.6;
+  filter: grayscale(1);
+  transition:
+    opacity 30s ease,
+    filter 30s ease;
+}
+
+.decor--draggable {
+  cursor: grab;
+}
+
+/* Декор стандартного режима закреплён на фоне */
+.std-decor-item {
+  position: fixed;
+  z-index: 0;
+}
+
+@media (max-width: 1120px) {
+  .std-decor-item {
+    display: none;
+  }
+}
+
+.decor--draggable:hover,
+.std-decor-item:hover {
+  opacity: 1;
+  filter: grayscale(0);
+  transition:
+    opacity 0.25s ease,
+    filter 0.25s ease;
+}
+
+/* Сияние «жёлтые вращающиеся лучи» — общий класс для декора, аватара
+   и hacker-bubble. Вспыхивает при ховере, гаснет за 5 с; --lit горит
+   всегда. Носителю нужен stacking context (filter/isolation/z-index),
+   чтобы z-index: -1 оставался внутри. Размер ореола — var(--ray-inset). */
+.ray-glow {
+  --ray-inset: -52px;
+}
+
+.ray-glow::before {
+  content: '';
+  position: absolute;
+  inset: var(--ray-inset);
+  z-index: -1;
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(
+      from 0deg,
+      rgba(255, 214, 40, 0.55) 0deg 9deg,
+      rgba(255, 214, 40, 0) 9deg 30deg
+    ),
+    radial-gradient(circle, rgba(255, 214, 40, 0.5) 0%, rgba(255, 214, 40, 0.15) 40%, transparent 65%);
+  -webkit-mask-image: radial-gradient(circle, #000 25%, transparent 70%);
+  mask-image: radial-gradient(circle, #000 25%, transparent 70%);
+  opacity: 0;
+  transition: opacity 5s ease;
+  animation: decor-glow-spin 14s linear infinite;
+  pointer-events: none;
+}
+
+.ray-glow:hover::before,
+.ray-glow--lit::before {
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+@keyframes decor-glow-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ray-glow::before,
+  .frame__lamp {
+    animation: none;
+  }
+}
+
+.decor--draggable:active {
+  cursor: grabbing;
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    radial-gradient(rgba(0, 0, 0, 0.35) 1px, transparent 1.2px);
+  background-size:
+    3px 3px,
+    5px 5px;
+  background-position:
+    0 0,
+    2px 3px;
+  opacity: var(--grain-opacity);
+}
+
+.grain__scratch {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.25);
+  animation: scratch-splice 34s linear infinite;
+}
+
+.grain__scratch--dim {
+  background: rgba(255, 255, 255, 0.18);
+  animation-delay: -17s;
+  animation-duration: 41s;
+}
+
+/* «Склейка киноплёнки»: царапина изредка дёргается на долю секунды */
+@keyframes scratch-splice {
+  0%,
+  96% {
+    translate: 0 0;
+    opacity: 1;
+  }
+  96.6% {
+    translate: -7px 0;
+    opacity: 0.45;
+  }
+  97.2% {
+    translate: 5px 0;
+    opacity: 0.9;
+  }
+  97.8% {
+    translate: -2px 0;
+  }
+  98.4%,
+  100% {
+    translate: 0 0;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain__scratch {
+    animation: none;
+  }
+}
+
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 70%, var(--vignette) 100%);
+}
+

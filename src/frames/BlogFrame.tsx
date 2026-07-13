@@ -26,9 +26,9 @@ export function BlogFrame({ onOpenPost }: { onOpenPost: (id: string) => void }) 
           </button>
         ))}
       </div>
-      {!expanded && blogPosts.length > VISIBLE_POSTS && (
-        <button className="blog-more interactive" onClick={() => setExpanded(true)}>
-          Смотреть все ({blogPosts.length})
+      {blogPosts.length > VISIBLE_POSTS && (
+        <button className="blog-more interactive" onClick={() => setExpanded((e) => !e)}>
+          {expanded ? 'Свернуть' : `Смотреть все (${blogPosts.length})`}
         </button>
       )}
     </>
