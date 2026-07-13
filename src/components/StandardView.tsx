@@ -4,6 +4,7 @@ import type { Route, Theme } from '../hooks'
 import { BottomNav } from './BottomNav'
 import { GrainOverlay, StandardDecor, Vignette } from './Decor'
 import { ViewSwitcher, type ViewMode } from './ViewSwitcher'
+import { lampDelayStyle } from './FrameShell'
 
 interface Props {
   route: Route
@@ -94,6 +95,7 @@ export function StandardView({ route, navigate, theme, onToggleTheme, viewMode, 
             <img
               key={visibleId === s.id ? 'on' : 'off'}
               className={'frame__lamp' + (visibleId === s.id ? ' frame__lamp--on' : '')}
+              style={lampDelayStyle(s.id)}
               src={`${import.meta.env.BASE_URL}${visibleId === s.id ? 'glight1.png' : 'glight2.png'}`}
               alt=""
               aria-hidden="true"

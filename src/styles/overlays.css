@@ -161,30 +161,27 @@
   }
 }
 
-/* ===== Iris-in: круговое раскрытие при загрузке ===== */
+/* ===== Iris-in: круговое раскрытие при загрузке =====
+   Прозрачный круг-«дыра» в центре, чернота — гигантская box-shadow
+   вокруг него: у неё нет внешнего края, экран чёрный целиком. */
 .iris-in {
   position: fixed;
-  inset: 0;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
   z-index: 300;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  box-shadow: 0 0 0 250vmax #000;
   pointer-events: none;
-  background: #000;
-  -webkit-mask-image: radial-gradient(circle at center, transparent 49%, #000 51%);
-  mask-image: radial-gradient(circle at center, transparent 49%, #000 51%);
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-  animation: iris-open 0.9s ease-out forwards;
+  animation: iris-open 0.9s ease-in forwards;
 }
 
 @keyframes iris-open {
-  from {
-    -webkit-mask-size: 0% 0%;
-    mask-size: 0% 0%;
-  }
   to {
-    -webkit-mask-size: 320% 320%;
-    mask-size: 320% 320%;
+    width: 165vmax;
+    height: 165vmax;
   }
 }
 
@@ -599,6 +596,13 @@
 
 .bottom-nav__theme {
   position: relative;
+}
+
+.bottom-nav__theme-icon {
+  display: block;
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
 }
 
 .nav-spark {

@@ -1,6 +1,13 @@
-import { useMemo, type ReactNode } from 'react'
+import { useMemo, type CSSProperties, type ReactNode } from 'react'
 import type { FrameRect } from '../content'
 import type { CanvasEngine } from '../canvas/useCanvasEngine'
+
+/** Рассинхрон покачивания фонарей: стабильная задержка из id раздела */
+export function lampDelayStyle(id: string): CSSProperties {
+  let hash = 0
+  for (const ch of id) hash = (hash * 31 + ch.charCodeAt(0)) % 997
+  return { '--lamp-delay': `${-(hash % 60) / 10}s` } as CSSProperties
+}
 
 interface Props {
   id: string
@@ -35,6 +42,7 @@ export function FrameShell({ id, title, rect, active, engine, shake, children }:
       <img
         key={active ? 'on' : 'off'}
         className={'frame__lamp' + (active ? ' frame__lamp--on' : '')}
+        style={lampDelayStyle(id)}
         src={`${import.meta.env.BASE_URL}${active ? 'glight1.png' : 'glight2.png'}`}
         alt=""
         aria-hidden="true"

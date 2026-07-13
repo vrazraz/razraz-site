@@ -41,7 +41,12 @@ export function BottomNav({ sections, active, onSelect, theme, onToggleTheme, sc
         aria-label={theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
         title={theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
       >
-        {theme === 'dark' ? '☀' : '☾'}
+        <img
+          className="bottom-nav__theme-icon"
+          src={`${import.meta.env.BASE_URL}${theme === 'dark' ? 'icon-sun.png' : 'icon-moon.png'}`}
+          alt=""
+          draggable={false}
+        />
         {spark > 0 && (
           <svg key={spark} className="nav-spark" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
             <path

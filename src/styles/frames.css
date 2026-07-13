@@ -427,11 +427,13 @@ a.chip {
   }
 }
 
-/* Фонари слегка качаются; при движении канваса — вздрагивают сильнее */
+/* Фонари слегка качаются (не синхронно — задержка из id раздела);
+   при движении канваса — вздрагивают сильнее */
 .frame__lamp {
   transform-origin: 50% 0;
   --sway-amp: 1.5deg;
   animation: lamp-sway 6s ease-in-out infinite;
+  animation-delay: var(--lamp-delay, 0s);
 }
 
 @keyframes lamp-sway {
@@ -449,11 +451,13 @@ a.chip {
   animation-duration: 1s;
 }
 
-/* Фонарь «прожигается» при включении: пара миганий и ровный свет */
+/* Фонарь «прожигается» при включении: пара миганий и ровный свет.
+   Мигание — сразу, качание сохраняет свой сдвиг фазы */
 .frame__lamp--on {
   animation:
     lamp-flicker 0.6s linear,
     lamp-sway 6s ease-in-out infinite;
+  animation-delay: 0s, var(--lamp-delay, 0s);
 }
 
 .canvas-root--moving .frame__lamp--on {
