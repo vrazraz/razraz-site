@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { blogPosts, projects } from './content'
 import { useHashRoute, useIsMobile, useTheme } from './hooks'
 import { CanvasView } from './components/CanvasView'
+import { StandardView } from './components/StandardView'
 import { MobileFeed } from './components/MobileFeed'
 import { PostPanel } from './components/PostPanel'
 import { ProjectPanel } from './components/ProjectPanel'
@@ -15,6 +16,15 @@ export default function App() {
   const [unlocked, setUnlocked] = useState<ReadonlySet<string>>(new Set())
   const [celebrating, setCelebrating] = useState(false)
   const [shakeFrame, setShakeFrame] = useState<string | null>(null)
+  const [viewMode, setViewMode] = useState<'canvas' | 'standard'>(() =>
+    localStorage.getItem('view-mode') === 'standard' ? 'standard' : 'canvas',
+  )
+  const toggleView = () =>
+    setViewMode((m) => {
+      const next = m === 'canvas' ? 'standard' : 'canvas'
+      localStorage.setItem('view-mode', next)
+      return next
+    })
 
   const post = route.postId ? blogPosts.find((p) => p.id === route.postId) ?? null : null
   const project = route.projectSlug
@@ -24,13 +34,22 @@ export default function App() {
 
   const view = isMobile ? (
     <MobileFeed route={route} navigate={navigate} theme={theme} onToggleTheme={toggleTheme} />
-  ) : (
+  ) : viewMode === 'canvas' ? (
     <CanvasView
       route={route}
       navigate={navigate}
       theme={theme}
       onToggleTheme={toggleTheme}
       shakeFrame={shakeFrame}
+      onToggleView={toggleView}
+    />
+  ) : (
+    <StandardView
+      route={route}
+      navigate={navigate}
+      theme={theme}
+      onToggleTheme={toggleTheme}
+      onToggleView={toggleView}
     />
   )
 

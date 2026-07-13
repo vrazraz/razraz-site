@@ -16,9 +16,10 @@ interface Props {
   theme: Theme
   onToggleTheme: () => void
   shakeFrame?: string | null
+  onToggleView?: () => void
 }
 
-export function CanvasView({ route, navigate, theme, onToggleTheme, shakeFrame }: Props) {
+export function CanvasView({ route, navigate, theme, onToggleTheme, shakeFrame, onToggleView }: Props) {
   const engine = useCanvasEngine(layout)
   const started = useRef(false)
 
@@ -81,6 +82,8 @@ export function CanvasView({ route, navigate, theme, onToggleTheme, shakeFrame }
         onToggleTheme={onToggleTheme}
         scale={t.scale}
         onResetZoom={engine.resetZoom}
+        viewMode="canvas"
+        onToggleView={onToggleView}
       />
       <Minimap engine={engine} />
     </div>

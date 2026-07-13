@@ -1014,6 +1014,37 @@ a.chip {
   background: radial-gradient(ellipse at center, transparent 70%, var(--vignette) 100%);
 }
 
+/* ===== Стандартный режим: вертикальная страница ===== */
+.standard {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: var(--canvas-bg);
+  background-image: radial-gradient(var(--canvas-dot) 1.3px, transparent 1.3px);
+  background-size: 22px 22px;
+}
+
+.standard__inner {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
+
+.standard__section {
+  position: relative;
+}
+
+.standard__body {
+  padding: 34px 36px;
+}
+
+.standard .project-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
 /* ===== Мобильный пейджер: один фрейм на экран, свайп по горизонтали ===== */
 .feed {
   height: 100%;

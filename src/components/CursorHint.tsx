@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-const HINT_TEXT = 'Для передвижения используйте пробел или ПКМ'
+const HINT_TEXT = 'Перемещение: пробел, ПКМ или скролл тачпадом'
 const TYPE_MS = 38
 const HOLD_MS = 3000
 

@@ -314,12 +314,26 @@ export function useCanvasEngine(initialLayout: Record<string, FrameRect>) {
       }
       e.preventDefault()
       stopAnimations()
-      const factor = Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : 0.0018))
-      zoomAt(e.clientX, e.clientY, factor)
+      if (e.ctrlKey) {
+        /* щипок на тачпаде (браузер шлёт wheel+ctrlKey) и ctrl+колесо */
+        zoomAt(e.clientX, e.clientY, Math.exp(-e.deltaY * 0.01))
+        return
+      }
+      /* Скролл двумя пальцами по тачпаду — панорамирование (как в Figma).
+         Эвристика: тачпад шлёт пиксельные дельты с горизонтальной
+         составляющей или мелким шагом; колесо мыши — крупные шаги. */
+      const isTouchpadScroll =
+        e.deltaMode === WheelEvent.DOM_DELTA_PIXEL &&
+        (Math.abs(e.deltaX) > 0 || Math.abs(e.deltaY) < 50)
+      if (isTouchpadScroll) {
+        panBy(-e.deltaX, -e.deltaY)
+      } else {
+        zoomAt(e.clientX, e.clientY, Math.exp(-e.deltaY * 0.0018))
+      }
     }
     root.addEventListener('wheel', onWheel, { passive: false })
     return () => root.removeEventListener('wheel', onWheel)
-  }, [zoomAt, stopAnimations])
+  }, [zoomAt, panBy, stopAnimations])
 
   useEffect(() => () => stopAnimations(), [stopAnimations])
 

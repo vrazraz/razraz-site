@@ -11,9 +11,22 @@ interface Props {
   /** Данные зума показываются только на канвасе */
   scale?: number
   onResetZoom?: () => void
+  /** Переключатель режима отображения (только веб-версия) */
+  viewMode?: 'canvas' | 'standard'
+  onToggleView?: () => void
 }
 
-export function BottomNav({ sections, active, onSelect, theme, onToggleTheme, scale, onResetZoom }: Props) {
+export function BottomNav({
+  sections,
+  active,
+  onSelect,
+  theme,
+  onToggleTheme,
+  scale,
+  onResetZoom,
+  viewMode,
+  onToggleView,
+}: Props) {
   const [spark, setSpark] = useState(0)
   return (
     <nav className="bottom-nav toon-panel" aria-label="Разделы">
@@ -54,6 +67,16 @@ export function BottomNav({ sections, active, onSelect, theme, onToggleTheme, sc
           </svg>
         )}
       </button>
+      {onToggleView && (
+        <button
+          className="bottom-nav__theme bottom-nav__view"
+          onClick={onToggleView}
+          aria-label={viewMode === 'canvas' ? 'Стандартный вид' : 'Экспериментальный вид'}
+          title={viewMode === 'canvas' ? 'Стандартный вид' : 'Экспериментальный вид'}
+        >
+          {viewMode === 'canvas' ? '▤' : '⌗'}
+        </button>
+      )}
     </nav>
   )
 }
