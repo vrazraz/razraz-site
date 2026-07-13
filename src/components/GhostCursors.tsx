@@ -23,8 +23,10 @@ const COLORS = ['#ff6b6b', '#5b8cff', '#ffb020', '#9b5bfa', '#2fbf71', '#ff5da2'
 /* Зона блужданий в мировых координатах — вокруг фреймов */
 const AREA = { x0: -150, y0: -320, x1: 2320, y1: 2020 }
 
-const LERP = 0.028
+const LERP = 0.011
 const ARRIVE_DIST = 10
+/* одновременно 0–2 курсора */
+const rollDesired = () => Math.floor(Math.random() * 3)
 
 interface Ghost {
   id: number
@@ -64,7 +66,7 @@ function makeGhost(id: number, taken: Set<string>): Ghost {
 export function GhostCursors({ scale }: { scale: number }) {
   const [ghosts, setGhosts] = useState<Ghost[]>([])
   const nextId = useRef(0)
-  const desired = useRef(1 + Math.floor(Math.random() * 3))
+  const desired = useRef(rollDesired())
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -91,10 +93,9 @@ export function GhostCursors({ scale }: { scale: number }) {
         if (g.leaving) return g
         if (now > g.leaveAt) {
           changed = true
-          /* уходит; через паузу приходит кто-то другой */
+          /* уходит; через паузу состав пополняется до желаемого */
           const t = window.setTimeout(() => {
             spawnTimers.delete(t)
-            desired.current = 1 + Math.floor(Math.random() * 3)
             while (alive.filter((a) => !a.leaving).length < desired.current) spawn()
           }, rand(2500, 9000))
           spawnTimers.add(t)
@@ -122,8 +123,24 @@ export function GhostCursors({ scale }: { scale: number }) {
     }
     setGhosts(alive)
     const interval = window.setInterval(step, 40)
+
+    /* Периодическая «смена посетителей»: даже после пустого зала
+       кто-то может зайти, а лишние — уйти пораньше */
+    const churn = window.setInterval(() => {
+      desired.current = rollDesired()
+      const active = alive.filter((a) => !a.leaving)
+      if (active.length < desired.current) {
+        while (alive.filter((a) => !a.leaving).length < desired.current) spawn()
+      } else if (active.length > desired.current) {
+        const extra = active.slice(desired.current)
+        const now = performance.now()
+        alive = alive.map((g) => (extra.some((e) => e.id === g.id) ? { ...g, leaveAt: now } : g))
+      }
+    }, 30000)
+
     return () => {
       window.clearInterval(interval)
+      window.clearInterval(churn)
       spawnTimers.forEach((t) => window.clearTimeout(t))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

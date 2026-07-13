@@ -89,10 +89,10 @@ function Draggable({
 /** Наклоны ±20°, размеры каждого спрайта варьируются в пределах ±10% от базовых 150px */
 const SPRITES = [
   { src: 'decor-bulb.png', x: 790, y: -40, w: 138, rot: -14 },
-  { src: 'decor-books.png', x: 160, y: 655, w: 165, rot: 9 },
+  { src: 'decor-books.png', x: -190, y: 700, w: 165, rot: 9 },
   { src: 'decor-cursor.png', x: 700, y: 1150, w: 150, rot: -18 },
   { src: 'decor-design.png', x: 1360, y: 640, w: 160, rot: 6 },
-  { src: 'decor-folder.png', x: 300, y: 1640, w: 143, rot: 16 },
+  { src: 'decor-folder.png', x: 300, y: 1930, w: 143, rot: 16 },
   { src: 'decor-lamp.png', x: 1780, y: 1240, w: 152, rot: -11 },
   { src: 'decor-password.png', x: 2230, y: 130, w: 145, rot: -13 },
 ]
@@ -147,22 +147,20 @@ const STD_SPRITES = [
 
 function scatter(): { src: string; style: CSSProperties; w: number; rot: number }[] {
   const shuffled = [...STD_SPRITES].sort(() => Math.random() - 0.5)
-  /* три вертикальных слота на каждую полосу, чтобы не слипались */
-  const slots = [
-    [4, 24],
-    [34, 56],
-    [66, 84],
-  ]
-  return shuffled.map((src, i) => {
-    const left = i < 3
-    const slot = slots[i % 3]
-    const style: CSSProperties = {
-      top: `${slot[0] + Math.random() * (slot[1] - slot[0])}%`,
-      [left ? 'left' : 'right']: `${1.5 + Math.random() * 5}%`,
+  /* полный разброс по фону; отбраковка слишком близких позиций */
+  const placed: { x: number; y: number }[] = []
+  return shuffled.map((src) => {
+    let x = 50
+    let y = 50
+    for (let tries = 0; tries < 40; tries++) {
+      x = 2 + Math.random() * 84
+      y = 4 + Math.random() * 82
+      if (placed.every((p) => Math.hypot(p.x - x, (p.y - y) * 0.8) > 26)) break
     }
+    placed.push({ x, y })
     return {
       src,
-      style,
+      style: { left: `${x}%`, top: `${y}%` } as CSSProperties,
       w: Math.round(120 * (0.9 + Math.random() * 0.2)),
       rot: Math.round(-20 + Math.random() * 40),
     }

@@ -17,8 +17,10 @@ export function ProjectPanel({ project, onClose }: { project: ProjectDoc; onClos
         <header className="post-panel__head">
           <div>
             <h3 className="post-panel__title">{project.meta.title ?? project.slug}</h3>
-            {project.tags.length > 0 && (
-              <span className="post-panel__date">{project.tags.join(' · ')}</span>
+            {(project.year || project.tags.length > 0) && (
+              <span className="post-panel__date">
+                {[project.year, ...project.tags].filter(Boolean).join(' · ')}
+              </span>
             )}
           </div>
           <button className="post-panel__close" onClick={onClose} aria-label="Закрыть">

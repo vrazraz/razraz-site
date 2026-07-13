@@ -1,6 +1,7 @@
 ---
 title: Редактор анкет для интервьюирования
 tags: [LeadFrog, ноды, исследование]
+year: 2021
 cover: ./survey-editor-hero.webp
 ---
 

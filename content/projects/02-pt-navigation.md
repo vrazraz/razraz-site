@@ -2,6 +2,7 @@
 title: PT NGFW — навигация
 tags: [PT NGFW, навигация, исследования, тёмная тема]
 nda: true
+year: 2024
 cover: ./pt-nav-hero.webp
 ---
 

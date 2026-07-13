@@ -1,6 +1,7 @@
 ---
 title: LeadFrog app
 tags: [мобильное приложение, выставки, исследования]
+year: 2021
 cover: ./leadfrog-hero.webp
 ---
 

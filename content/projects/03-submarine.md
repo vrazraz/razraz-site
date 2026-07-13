@@ -1,6 +1,7 @@
 ---
 title: Дизайн-система Submarine
 tags: [дизайн-система, Figma, токены]
+year: 2023
 cover: ./submarine-cover.webp
 ---
 

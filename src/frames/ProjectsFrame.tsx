@@ -1,6 +1,7 @@
-import { projects } from '../content'
+import { projects, site } from '../content'
 
 export function ProjectsFrame({ onOpenProject }: { onOpenProject: (slug: string) => void }) {
+  const behance = site.social.find((s) => s.label === 'Behance')?.url
   return (
     <>
       <h2 className="frame-title frame-title--md">
@@ -28,7 +29,10 @@ export function ProjectsFrame({ onOpenProject }: { onOpenProject: (slug: string)
               </div>
             )}
             <div className="project-card__body">
-              <h3>{p.meta.title ?? p.slug}</h3>
+              <h3>
+                {p.meta.title ?? p.slug}
+                {p.year && <span className="project-card__year">{p.year}</span>}
+              </h3>
               {p.tags.length > 0 && (
                 <div className="chips chips--sm">
                   {p.tags.slice(0, 3).map((t) => (
@@ -42,6 +46,14 @@ export function ProjectsFrame({ onOpenProject }: { onOpenProject: (slug: string)
           </article>
         ))}
       </div>
+      {behance && (
+        <p className="projects-more">
+          Более старые работы — на{' '}
+          <a className="interactive" href={behance} target="_blank" rel="noreferrer">
+            Behance ↗
+          </a>
+        </p>
+      )}
     </>
   )
 }

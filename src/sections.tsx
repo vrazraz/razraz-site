@@ -3,6 +3,7 @@ import { AboutFrame } from './frames/AboutFrame'
 import { ProjectsFrame } from './frames/ProjectsFrame'
 import { BlogFrame } from './frames/BlogFrame'
 import { ResumeFrame } from './frames/ResumeFrame'
+import { SkillsFrame } from './frames/SkillsFrame'
 
 export interface Section {
   id: string
@@ -23,4 +24,5 @@ export const SECTIONS: Section[] = [
     render: (navigate) => <BlogFrame onOpenPost={(id) => navigate('blog', id)} />,
   },
   { id: 'resume', label: 'Резюме', render: () => <ResumeFrame /> },
+  { id: 'skills', label: 'Навыки', render: () => <SkillsFrame /> },
 ]

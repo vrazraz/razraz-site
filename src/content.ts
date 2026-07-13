@@ -30,6 +30,7 @@ export interface ProjectDoc extends MarkdownDoc {
   tags: string[]
   link?: string
   cover?: string
+  year?: string
   nda: boolean
 }
 
@@ -103,6 +104,7 @@ export const projects: ProjectDoc[] = Object.entries(projectFiles)
       tags: parseList(doc.meta.tags),
       link: doc.meta.link,
       cover: doc.meta.cover,
+      year: doc.meta.year,
       nda: doc.meta.nda === 'true',
     }
   })

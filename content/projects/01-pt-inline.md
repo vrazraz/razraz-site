@@ -2,6 +2,7 @@
 title: PT NGFW — инлайн-создание сложной подсущности
 tags: [PT NGFW, UX-исследование, enterprise]
 nda: true
+year: 2024
 cover: ./pt-inline-hero.webp
 ---
 
