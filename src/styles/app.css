@@ -882,7 +882,7 @@ a.chip {
   transition: translate 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.view-switcher--standard .view-switcher__pill {
+.view-switcher--canvas .view-switcher__pill {
   translate: calc(100% + 4px) 0;
 }
 

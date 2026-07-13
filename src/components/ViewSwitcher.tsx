@@ -1,8 +1,8 @@
 export type ViewMode = 'canvas' | 'standard'
 
 const MODES: { id: ViewMode; label: string }[] = [
-  { id: 'canvas', label: 'Экспериментальный' },
   { id: 'standard', label: 'Стандартный' },
+  { id: 'canvas', label: 'Экспериментальный' },
 ]
 
 /** Segmented control режима отображения — сверху по центру */

@@ -17,7 +17,7 @@ export default function App() {
   const [celebrating, setCelebrating] = useState(false)
   const [shakeFrame, setShakeFrame] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<'canvas' | 'standard'>(() =>
-    localStorage.getItem('view-mode') === 'standard' ? 'standard' : 'canvas',
+    localStorage.getItem('view-mode') === 'canvas' ? 'canvas' : 'standard',
   )
   const changeView = (next: 'canvas' | 'standard') => {
     localStorage.setItem('view-mode', next)
