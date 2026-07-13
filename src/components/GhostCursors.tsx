@@ -23,8 +23,13 @@ const COLORS = ['#ff6b6b', '#5b8cff', '#ffb020', '#9b5bfa', '#2fbf71', '#ff5da2'
 /* Зона блужданий в мировых координатах — вокруг фреймов */
 const AREA = { x0: -150, y0: -320, x1: 2320, y1: 2020 }
 
-const LERP = 0.011
 const ARRIVE_DIST = 10
+/* Ритм движения: 1–2 быстрых дальних перелёта, затем 2–4 коротких
+   медленных шага — как будто человек нашёл место и разглядывает */
+const DASH_SPEED = 0.034
+const BROWSE_SPEED = 0.015
+const DASH_MIN_DIST = 800
+const BROWSE_DIST = [70, 280] as const
 /* одновременно 0–2 курсора */
 const rollDesired = () => Math.floor(Math.random() * 3)
 
@@ -36,6 +41,9 @@ interface Ghost {
   y: number
   tx: number
   ty: number
+  mode: 'dash' | 'browse'
+  movesLeft: number
+  speed: number
   waitUntil: number
   leaveAt: number
   leaving: boolean
@@ -43,19 +51,45 @@ interface Ghost {
 
 const rand = (a: number, b: number) => a + Math.random() * (b - a)
 
+const clamp = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v))
+
+/** Цель следующего шага в зависимости от режима */
+function pickTarget(x: number, y: number, mode: Ghost['mode']): { tx: number; ty: number } {
+  if (mode === 'dash') {
+    for (let i = 0; i < 20; i++) {
+      const tx = rand(AREA.x0, AREA.x1)
+      const ty = rand(AREA.y0, AREA.y1)
+      if (Math.hypot(tx - x, ty - y) > DASH_MIN_DIST) return { tx, ty }
+    }
+    return { tx: rand(AREA.x0, AREA.x1), ty: rand(AREA.y0, AREA.y1) }
+  }
+  const angle = rand(0, Math.PI * 2)
+  const r = rand(BROWSE_DIST[0], BROWSE_DIST[1])
+  return {
+    tx: clamp(x + Math.cos(angle) * r, AREA.x0, AREA.x1),
+    ty: clamp(y + Math.sin(angle) * r, AREA.y0, AREA.y1),
+  }
+}
+
+const rollMoves = (mode: Ghost['mode']) =>
+  mode === 'dash' ? Math.round(rand(1, 2)) : Math.round(rand(2, 4))
+
 function makeGhost(id: number, taken: Set<string>): Ghost {
   const free = USERS.filter((u) => !taken.has(u))
   const name = free[Math.floor(Math.random() * free.length)] ?? USERS[0]
   const x = rand(AREA.x0, AREA.x1)
   const y = rand(AREA.y0, AREA.y1)
+  const mode: Ghost['mode'] = Math.random() < 0.5 ? 'dash' : 'browse'
   return {
     id,
     name,
     color: COLORS[id % COLORS.length],
     x,
     y,
-    tx: rand(AREA.x0, AREA.x1),
-    ty: rand(AREA.y0, AREA.y1),
+    ...pickTarget(x, y, mode),
+    mode,
+    movesLeft: rollMoves(mode),
+    speed: mode === 'dash' ? DASH_SPEED : BROWSE_SPEED,
     waitUntil: 0,
     leaveAt: performance.now() + rand(25000, 60000),
     leaving: false,
@@ -87,7 +121,6 @@ export function GhostCursors({ scale }: { scale: number }) {
       const now = performance.now()
       const frames = Math.min(5, (now - last) / 16.7)
       last = now
-      const k = 1 - Math.pow(1 - LERP, frames)
       let changed = false
       alive = alive.map((g) => {
         if (g.leaving) return g
@@ -109,14 +142,24 @@ export function GhostCursors({ scale }: { scale: number }) {
         const dx = g.tx - g.x
         const dy = g.ty - g.y
         if (Math.hypot(dx, dy) < ARRIVE_DIST) {
+          /* пришли: считаем шаги, по исчерпании меняем ритм */
+          let mode = g.mode
+          let movesLeft = g.movesLeft - 1
+          if (movesLeft <= 0) {
+            mode = g.mode === 'dash' ? 'browse' : 'dash'
+            movesLeft = rollMoves(mode)
+          }
           return {
             ...g,
-            waitUntil: now + rand(900, 4200),
-            tx: rand(AREA.x0, AREA.x1),
-            ty: rand(AREA.y0, AREA.y1),
+            mode,
+            movesLeft,
+            speed: mode === 'dash' ? DASH_SPEED : BROWSE_SPEED,
+            waitUntil: now + (mode === 'browse' ? rand(500, 2200) : rand(1200, 4200)),
+            ...pickTarget(g.x, g.y, mode),
           }
         }
         changed = true
+        const k = 1 - Math.pow(1 - g.speed, frames)
         return { ...g, x: g.x + dx * k, y: g.y + dy * k }
       })
       if (changed) setGhosts(alive)
