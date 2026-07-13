@@ -639,6 +639,26 @@ a.chip {
   }
 }
 
+/* ===== Кнопка «Смотреть все» в блоге ===== */
+.blog-more {
+  width: 100%;
+  margin-top: 10px;
+  background: var(--control-bg);
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+  color: var(--text-2);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 14px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.blog-more:hover {
+  color: var(--text);
+  border-color: var(--outline);
+}
+
 /* ===== Окно пароля NDA ===== */
 .pass-gate {
   position: fixed;
