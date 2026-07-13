@@ -133,20 +133,47 @@ export function CanvasDecor({ scale, spaceHeld }: { scale: number; spaceHeld: bo
   )
 }
 
-/** Декор стандартного режима: закреплён на фоне (fixed), по краям экрана */
-const FIXED_SPRITES: { src: string; style: CSSProperties; w: number; rot: number }[] = [
-  { src: 'decor-bulb.png', style: { left: '3%', top: '12%' }, w: 112, rot: -14 },
-  { src: 'decor-books.png', style: { left: '2.5%', bottom: '16%' }, w: 132, rot: 9 },
-  { src: 'decor-cursor.png', style: { right: '4%', top: '20%' }, w: 116, rot: -16 },
-  { src: 'decor-design.png', style: { left: '4%', top: '46%' }, w: 128, rot: 6 },
-  { src: 'decor-folder.png', style: { right: '5.5%', top: '52%' }, w: 114, rot: 16 },
-  { src: 'decor-lamp.png', style: { right: '3.5%', bottom: '10%' }, w: 122, rot: -9 },
+/** Декор стандартного режима: закреплён на фоне (fixed), по краям экрана.
+ *  Раскладка случайная на каждую загрузку: спрайты тасуются между левой
+ *  и правой полосами, вертикальные слоты и наклоны рандомизируются. */
+const STD_SPRITES = [
+  'decor-bulb.png',
+  'decor-books.png',
+  'decor-cursor.png',
+  'decor-design.png',
+  'decor-folder.png',
+  'decor-lamp.png',
 ]
 
+function scatter(): { src: string; style: CSSProperties; w: number; rot: number }[] {
+  const shuffled = [...STD_SPRITES].sort(() => Math.random() - 0.5)
+  /* три вертикальных слота на каждую полосу, чтобы не слипались */
+  const slots = [
+    [4, 24],
+    [34, 56],
+    [66, 84],
+  ]
+  return shuffled.map((src, i) => {
+    const left = i < 3
+    const slot = slots[i % 3]
+    const style: CSSProperties = {
+      top: `${slot[0] + Math.random() * (slot[1] - slot[0])}%`,
+      [left ? 'left' : 'right']: `${1.5 + Math.random() * 5}%`,
+    }
+    return {
+      src,
+      style,
+      w: Math.round(120 * (0.9 + Math.random() * 0.2)),
+      rot: Math.round(-20 + Math.random() * 40),
+    }
+  })
+}
+
 export function StandardDecor() {
+  const [sprites] = useState(scatter)
   return (
     <>
-      {FIXED_SPRITES.map((s) => (
+      {sprites.map((s) => (
         <span key={s.src} className="std-decor-item" style={s.style} aria-hidden="true">
           <img
             className="decor-sprite"

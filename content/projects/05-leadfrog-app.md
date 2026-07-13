@@ -2,7 +2,6 @@
 title: LeadFrog app
 tags: [мобильное приложение, выставки, исследования]
 cover: ./leadfrog-hero.webp
-link: https://rain-tulip-149.notion.site/LeadFrog-app-425708c96e4645f8944c1b92a0114319
 ---
 
 ![LeadFrog app: карточка контакта и интерактивная карта выставки](./leadfrog-hero.webp)

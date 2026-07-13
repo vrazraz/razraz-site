@@ -481,6 +481,35 @@ a.chip {
   }
 }
 
+/* ===== Псевдокурсоры других посетителей ===== */
+.ghost-cursor {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  transform-origin: top left;
+  opacity: 1;
+  transition: opacity 0.45s ease;
+}
+
+.ghost-cursor--leaving {
+  opacity: 0;
+}
+
+.ghost-cursor__label {
+  position: absolute;
+  top: 20px;
+  left: 14px;
+  white-space: nowrap;
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 7px;
+  border: 1.5px solid #0c0c0e;
+  box-shadow: 2px 2px 0 var(--shadow-cel);
+}
+
 /* ===== Подсказка у курсора ===== */
 .cursor-hint {
   position: fixed;

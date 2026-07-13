@@ -2,7 +2,6 @@
 title: Дизайн-система Submarine
 tags: [дизайн-система, Figma, токены]
 cover: ./submarine-cover.webp
-link: https://rain-tulip-149.notion.site/Submarine-e7ebb0aa26d546e88c8fc73f2b345fff
 ---
 
 ![Дизайн-система Submarine v1.3.1: variables, components, autolayouts, variants, тёмная и светлая темы](./submarine-cover.webp)

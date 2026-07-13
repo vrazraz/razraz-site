@@ -3,7 +3,6 @@ title: PT NGFW — инлайн-создание сложной подсущно
 tags: [PT NGFW, UX-исследование, enterprise]
 nda: true
 cover: ./pt-inline-hero.webp
-link: https://rain-tulip-149.notion.site/PT-1969fb581b5a800b892ac00782b911df
 ---
 
 ![PT NGFW — линейка устройств Positive Technologies](./pt-inline-hero.webp)

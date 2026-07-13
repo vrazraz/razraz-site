@@ -3,7 +3,6 @@ title: PT NGFW — навигация
 tags: [PT NGFW, навигация, исследования, тёмная тема]
 nda: true
 cover: ./pt-nav-hero.webp
-link: https://rain-tulip-149.notion.site/PT-1919fb581b5a806686ecff0133f6a85a
 ---
 
 ![Интерфейс системы управления PT NGFW](./pt-nav-hero.webp)

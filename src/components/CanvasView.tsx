@@ -10,6 +10,7 @@ import { CanvasDecor, GrainOverlay, Vignette } from './Decor'
 import { CursorHint } from './CursorHint'
 import { ClickBurst } from './ClickBurst'
 import { ViewSwitcher, type ViewMode } from './ViewSwitcher'
+import { GhostCursors } from './GhostCursors'
 
 interface Props {
   route: Route
@@ -59,6 +60,7 @@ export function CanvasView({ route, navigate, theme, onToggleTheme, shakeFrame, 
         style={{ transform: `translate(${t.x}px, ${t.y}px) scale(${t.scale})` }}
       >
         <CanvasDecor scale={t.scale} spaceHeld={engine.spaceHeld} />
+        <GhostCursors scale={t.scale} />
         {SECTIONS.map((s) => (
           <FrameShell
             key={s.id}
