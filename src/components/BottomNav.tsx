@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import type { Theme } from '../hooks'
 import type { Section } from '../sections'
 import { useI18n } from '../i18n'
@@ -37,13 +38,32 @@ export function BottomNav({ sections, active, onSelect, theme, onToggleTheme, sc
   const { lang, setLang, s } = useI18n()
   const [spark, setSpark] = useState(0)
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [popPos, setPopPos] = useState({ right: 16, bottom: 74 })
   const navRef = useRef<HTMLElement | null>(null)
+  const gearRef = useRef<HTMLButtonElement | null>(null)
+  const popRef = useRef<HTMLDivElement | null>(null)
+
+  /* Поповер прижимается к шестерёнке, где бы она ни оказалась
+     (навигация по центру, на мобиле может быть проскроллена) */
+  const toggleSettings = () => {
+    const gear = gearRef.current
+    if (!settingsOpen && gear) {
+      const r = gear.getBoundingClientRect()
+      setPopPos({
+        right: Math.max(8, window.innerWidth - r.right),
+        bottom: Math.max(8, window.innerHeight - r.top + 10),
+      })
+    }
+    setSettingsOpen((o) => !o)
+  }
 
   /* Клик мимо и Esc закрывают настройки */
   useEffect(() => {
     if (!settingsOpen) return
     const onDown = (e: PointerEvent) => {
-      if (navRef.current && !navRef.current.contains(e.target as Node)) setSettingsOpen(false)
+      const t = e.target as Node
+      if (navRef.current?.contains(t) || popRef.current?.contains(t)) return
+      setSettingsOpen(false)
     }
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setSettingsOpen(false)
@@ -85,8 +105,9 @@ export function BottomNav({ sections, active, onSelect, theme, onToggleTheme, sc
         </button>
       )}
       <button
+        ref={gearRef}
         className={'bottom-nav__theme bottom-nav__gear' + (settingsOpen ? ' bottom-nav__gear--open' : '')}
-        onClick={() => setSettingsOpen((o) => !o)}
+        onClick={toggleSettings}
         aria-label={s.settings}
         aria-expanded={settingsOpen}
         title={s.settings}
@@ -104,8 +125,17 @@ export function BottomNav({ sections, active, onSelect, theme, onToggleTheme, sc
           </svg>
         )}
       </button>
-      {settingsOpen && (
-        <div className="settings-pop toon-panel" role="dialog" aria-label={s.settings}>
+      {settingsOpen &&
+        /* Портал: у навигации transform, из-за него fixed-поповер
+           позиционировался бы от панели, а не от вьюпорта */
+        createPortal(
+        <div
+          ref={popRef}
+          className="settings-pop toon-panel"
+          style={{ right: popPos.right, bottom: popPos.bottom }}
+          role="dialog"
+          aria-label={s.settings}
+        >
           <div className="settings-row">
             <span className="settings-row__label">{s.theme}</span>
             <button
@@ -139,7 +169,8 @@ export function BottomNav({ sections, active, onSelect, theme, onToggleTheme, sc
               ))}
             </div>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </nav>
   )

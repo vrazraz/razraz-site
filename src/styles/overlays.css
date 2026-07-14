@@ -571,6 +571,12 @@
   color: var(--nav-text);
 }
 
+/* На активной лаймовой «таблетке» текст при ховере остаётся тёмным —
+   белый сливался с салатовым в светлой теме */
+.bottom-nav__item--active:hover {
+  color: var(--on-accent);
+}
+
 .bottom-nav__item--active {
   background: var(--accent);
   border-color: var(--outline);
@@ -626,17 +632,15 @@
 }
 
 /* ===== Поповер настроек =====
-   position: fixed — иначе в мобильной навигации его обрезает
-   overflow-x: auto самой панели */
+   position: fixed (иначе обрезает overflow навигации), координаты
+   считаются от кнопки-шестерёнки в компоненте */
 .settings-pop {
   position: fixed;
-  bottom: 74px;
-  right: max(16px, calc(50vw - 260px));
-  width: 230px;
+  width: min(230px, calc(100vw - 16px));
   padding: 12px;
   background: var(--nav-bg);
   animation: settings-pop 0.22s cubic-bezier(0.34, 1.4, 0.64, 1);
-  z-index: 45;
+  z-index: 70;
 }
 
 @keyframes settings-pop {

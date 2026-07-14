@@ -75,6 +75,7 @@ export function CanvasView({ route, navigate, theme, onToggleTheme, shakeFrame, 
             rect={engine.positions[sec.id]}
             active={engine.activeFrame === sec.id}
             engine={engine}
+            theme={theme}
             shake={shakeFrame === sec.id}
           >
             {sec.render(navigate)}

@@ -3,7 +3,7 @@ import { SECTIONS } from '../sections'
 import type { Route, Theme } from '../hooks'
 import { BottomNav } from './BottomNav'
 import { GrainOverlay, Vignette } from './Decor'
-import { lampDelayStyle } from './FrameShell'
+import { lampDelayStyle, lampSrc } from './FrameShell'
 import { useI18n } from '../i18n'
 
 interface Props {
@@ -84,7 +84,7 @@ export function MobileFeed({ route, navigate, theme, onToggleTheme }: Props) {
                 key={sec.id === route.section ? 'on' : 'off'}
                 className={'frame__lamp' + (sec.id === route.section ? ' frame__lamp--on' : '')}
                 style={lampDelayStyle(sec.id)}
-                src={`${import.meta.env.BASE_URL}${sec.id === route.section ? 'glight1.png' : 'glight2.png'}`}
+                src={lampSrc(sec.id === route.section, theme)}
                 alt=""
                 aria-hidden="true"
                 draggable={false}
