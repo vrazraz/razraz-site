@@ -5,7 +5,7 @@ import { useI18n } from '../i18n'
 const VISIBLE_POSTS = 7
 
 export function BlogFrame({ onOpenPost }: { onOpenPost: (id: string) => void }) {
-  const { lang, s } = useI18n()
+  const { s } = useI18n()
   const [expanded, setExpanded] = useState(false)
   const fmt = useMemo(
     () => new Intl.DateTimeFormat(s.dateLocale, { day: 'numeric', month: 'long', year: 'numeric' }),
@@ -17,10 +17,6 @@ export function BlogFrame({ onOpenPost }: { onOpenPost: (id: string) => void }) 
       <h2 className="frame-title frame-title--md">
         {s.sections.blog}
       </h2>
-      <p className="frame-subtitle">
-        {s.blogSubtitle}
-        {lang === 'en' ? ` · ${s.blogNote}` : ''}
-      </p>
       {blogPosts.length === 0 && <p className="md">{s.blogEmpty}</p>}
       <div className="post-list">
         {shown.map((p) => (

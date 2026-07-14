@@ -1,4 +1,3 @@
 ---
-title: Resume
-subtitle: Experience
+title: Experience
 ---
