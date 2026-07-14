@@ -625,15 +625,18 @@
   rotate: 60deg;
 }
 
-/* ===== Поповер настроек ===== */
+/* ===== Поповер настроек =====
+   position: fixed — иначе в мобильной навигации его обрезает
+   overflow-x: auto самой панели */
 .settings-pop {
-  position: absolute;
-  bottom: calc(100% + 12px);
-  right: 0;
+  position: fixed;
+  bottom: 74px;
+  right: max(16px, calc(50vw - 260px));
   width: 230px;
   padding: 12px;
   background: var(--nav-bg);
   animation: settings-pop 0.22s cubic-bezier(0.34, 1.4, 0.64, 1);
+  z-index: 45;
 }
 
 @keyframes settings-pop {

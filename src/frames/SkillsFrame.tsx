@@ -8,7 +8,6 @@ export function SkillsFrame() {
     <>
       <h2 className="frame-title frame-title--md">
         {doc.meta.title ?? s.sections.skills}
-        <span className="accent">.</span>
       </h2>
       {doc.meta.subtitle && <p className="frame-subtitle">{doc.meta.subtitle}</p>}
       <div className="md" dangerouslySetInnerHTML={{ __html: doc.html }} />

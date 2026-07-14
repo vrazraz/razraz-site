@@ -16,7 +16,6 @@ export function BlogFrame({ onOpenPost }: { onOpenPost: (id: string) => void }) 
     <>
       <h2 className="frame-title frame-title--md">
         {s.sections.blog}
-        <span className="accent">.</span>
       </h2>
       <p className="frame-subtitle">
         {s.blogSubtitle}

@@ -26,7 +26,6 @@ export class ErrorBoundary extends Component<{ children: ReactNode }, State> {
         <div className="crash__panel toon-panel">
           <h1 className="crash__title">
             {s.crashTitle}
-            <span className="accent">.</span>
           </h1>
           <p className="crash__text">{s.crashText}</p>
           <button className="crash__reload interactive" onClick={() => window.location.reload()}>

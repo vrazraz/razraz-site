@@ -8,7 +8,6 @@ export function ResumeFrame() {
     <>
       <h2 className="frame-title frame-title--md">
         {doc.meta.title ?? s.sections.resume}
-        <span className="accent">.</span>
       </h2>
       {doc.meta.subtitle && <p className="frame-subtitle">{doc.meta.subtitle}</p>}
       <ol className="timeline">

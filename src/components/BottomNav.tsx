@@ -58,8 +58,10 @@ export function BottomNav({ sections, active, onSelect, theme, onToggleTheme, sc
 
   return (
     <nav ref={navRef} className="bottom-nav toon-panel" aria-label={s.navAria}>
-      {sections.map((sec) => {
-        const label = s.sections[sec.id]
+      {sections
+        .filter((sec) => sec.id !== 'skills')
+        .map((sec) => {
+          const label = s.sections[sec.id]
         return (
           <button
             key={sec.id}

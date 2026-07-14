@@ -8,7 +8,6 @@ export function ProjectsFrame({ onOpenProject }: { onOpenProject: (slug: string)
     <>
       <h2 className="frame-title frame-title--md">
         {s.sections.projects}
-        <span className="accent">.</span>
       </h2>
       <div className="project-grid">
         {projectsByLang[lang].map((p) => (
@@ -32,19 +31,8 @@ export function ProjectsFrame({ onOpenProject }: { onOpenProject: (slug: string)
               </div>
             )}
             <div className="project-card__body">
-              <h3>
-                {p.meta.title ?? p.slug}
-                {p.year && <span className="project-card__year">{p.year}</span>}
-              </h3>
-              {p.tags.length > 0 && (
-                <div className="chips chips--sm">
-                  {p.tags.slice(0, 3).map((t) => (
-                    <span key={t} className="chip chip--sm">
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              )}
+              <h3>{p.meta.title ?? p.slug}</h3>
+              {p.year && <div className="project-card__year">{p.year}</div>}
             </div>
           </article>
         ))}

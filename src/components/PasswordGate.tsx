@@ -51,7 +51,6 @@ export function PasswordGate({
       >
         <h3 className="pass-gate__title">
           {s.ndaTitle}
-          <span className="accent">.</span>
         </h3>
         <p className="pass-gate__text">{s.ndaText(title)}</p>
         <form
