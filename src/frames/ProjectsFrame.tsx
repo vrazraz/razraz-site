@@ -1,14 +1,17 @@
-import { projects, site } from '../content'
+import { projectsByLang, site } from '../content'
+import { useI18n } from '../i18n'
 
 export function ProjectsFrame({ onOpenProject }: { onOpenProject: (slug: string) => void }) {
-  const behance = site.social.find((s) => s.label === 'Behance')?.url
+  const { lang, s } = useI18n()
+  const behance = site.social.find((so) => so.label === 'Behance')?.url
   return (
     <>
       <h2 className="frame-title frame-title--md">
-        Проекты<span className="accent">.</span>
+        {s.sections.projects}
+        <span className="accent">.</span>
       </h2>
       <div className="project-grid">
-        {projects.map((p) => (
+        {projectsByLang[lang].map((p) => (
           <article
             key={p.slug}
             className="project-card project-card--clickable interactive"
@@ -48,7 +51,7 @@ export function ProjectsFrame({ onOpenProject }: { onOpenProject: (slug: string)
       </div>
       {behance && (
         <p className="projects-more">
-          Более старые работы — на{' '}
+          {s.olderWorks}{' '}
           <a className="interactive" href={behance} target="_blank" rel="noreferrer">
             Behance ↗
           </a>

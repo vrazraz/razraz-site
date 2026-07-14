@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { SECTIONS } from '../sections'
-import { blogPosts, projects } from '../content'
+import { blogPosts, projectsByLang } from '../content'
+import { useI18n } from '../i18n'
 
 interface Item {
   id: string
@@ -11,6 +12,7 @@ interface Item {
 
 /** Командная палитра (Cmd/Ctrl+K): быстрый переход к разделам, кейсам и постам */
 export function CommandPalette({ navigate }: { navigate: (section: string, detail?: string) => void }) {
+  const { lang, s } = useI18n()
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [index, setIndex] = useState(0)
@@ -18,26 +20,26 @@ export function CommandPalette({ navigate }: { navigate: (section: string, detai
 
   const items = useMemo<Item[]>(
     () => [
-      ...SECTIONS.map((s) => ({
-        id: 'section-' + s.id,
-        label: s.label,
-        hint: 'Раздел',
-        run: () => navigate(s.id),
+      ...SECTIONS.map((sec) => ({
+        id: 'section-' + sec.id,
+        label: s.sections[sec.id],
+        hint: s.hintSection,
+        run: () => navigate(sec.id),
       })),
-      ...projects.map((p) => ({
+      ...projectsByLang[lang].map((p) => ({
         id: 'project-' + p.slug,
         label: p.meta.title ?? p.slug,
-        hint: p.nda ? 'Кейс · NDA' : 'Кейс',
+        hint: p.nda ? s.hintCaseNda : s.hintCase,
         run: () => navigate('projects', p.slug),
       })),
       ...blogPosts.map((b) => ({
         id: 'post-' + b.id,
         label: b.title,
-        hint: 'Пост',
+        hint: s.hintPost,
         run: () => navigate('blog', b.id),
       })),
     ],
-    [navigate],
+    [navigate, lang, s],
   )
 
   const filtered = useMemo(() => {
@@ -78,11 +80,11 @@ export function CommandPalette({ navigate }: { navigate: (section: string, detai
   return (
     <>
       <div className="post-backdrop" onClick={() => setOpen(false)} />
-      <div className="palette toon-panel" role="dialog" aria-label="Быстрый переход">
+      <div className="palette toon-panel" role="dialog" aria-label={s.paletteAria}>
         <input
           ref={inputRef}
           className="palette__input"
-          placeholder="Куда перейти? Разделы, кейсы, посты…"
+          placeholder={s.palettePlaceholder}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => {
@@ -110,9 +112,9 @@ export function CommandPalette({ navigate }: { navigate: (section: string, detai
               </button>
             </li>
           ))}
-          {filtered.length === 0 && <li className="palette__empty">Ничего не нашлось</li>}
+          {filtered.length === 0 && <li className="palette__empty">{s.paletteEmpty}</li>}
         </ul>
-        <div className="palette__foot">↑↓ выбор · Enter перейти · Esc закрыть</div>
+        <div className="palette__foot">{s.paletteFoot}</div>
       </div>
     </>
   )

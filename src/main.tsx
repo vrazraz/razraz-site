@@ -8,11 +8,14 @@ import './styles/decor.css'
 import './styles/modes.css'
 import App from './App'
 import { ErrorBoundary } from './components/ErrorBoundary'
+import { LangProvider } from './i18n'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ErrorBoundary>
-      <App />
+      <LangProvider>
+        <App />
+      </LangProvider>
     </ErrorBoundary>
   </StrictMode>,
 )

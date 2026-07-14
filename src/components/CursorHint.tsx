@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
+import { useI18n } from '../i18n'
 
-const HINT_TEXT = 'Перемещение: пробел, ПКМ или скролл тачпадом'
 const TYPE_MS = 38
 const HOLD_MS = 3000
 
 /** Подсказка у курсора при открытии канваса: печатается, висит 3 с, тает. */
 export function CursorHint() {
+  const { s } = useI18n()
+  const HINT_TEXT = s.hint
   const [typed, setTyped] = useState(() =>
     window.matchMedia('(prefers-reduced-motion: reduce)').matches ? HINT_TEXT.length : 0,
   )

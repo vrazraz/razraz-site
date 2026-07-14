@@ -3,6 +3,8 @@ import siteJson from '../content/site.json'
 import layoutJson from '../content/layout.json'
 import blogJson from '../content/blog.json'
 import resumeJson from '../content/resume.json'
+import resumeEnJson from '../content/resume.en.json'
+import type { Lang } from './i18n'
 
 export interface FrameRect {
   x: number
@@ -43,7 +45,11 @@ export interface TimelineEntry {
 
 export const site = siteJson
 export const layout: Record<string, FrameRect> = layoutJson
-export const resumeTimeline: TimelineEntry[] = resumeJson.timeline
+
+export const resumeTimelines: Record<Lang, TimelineEntry[]> = {
+  ru: resumeJson.timeline,
+  en: resumeEnJson.timeline,
+}
 
 export const blogPosts: BlogPost[] = (blogJson.posts as BlogPost[]).filter((p) => !p.hidden)
 
@@ -87,25 +93,52 @@ const projectFiles = import.meta.glob('../content/projects/*.md', {
   eager: true,
 }) as Record<string, string>
 
-export const frameDocs: Record<string, MarkdownDoc> = Object.fromEntries(
-  Object.entries(frameFiles).map(([path, raw]) => {
-    const slug = path.split('/').pop()!.replace(/\.md$/, '')
-    return [slug, toDoc(raw)]
-  }),
-)
+/** Файлы вида name.md — русские, name.en.md — английские */
+function splitByLang(files: Record<string, string>): Record<Lang, Record<string, string>> {
+  const out: Record<Lang, Record<string, string>> = { ru: {}, en: {} }
+  for (const [path, raw] of Object.entries(files)) {
+    const file = path.split('/').pop()!.replace(/\.md$/, '')
+    if (file.endsWith('.en')) out.en[file.slice(0, -3)] = raw
+    else out.ru[file] = raw
+  }
+  return out
+}
 
-export const projects: ProjectDoc[] = Object.entries(projectFiles)
-  .map(([path, raw]) => {
-    const slug = path.split('/').pop()!.replace(/\.md$/, '')
-    const doc = toDoc(raw)
-    return {
-      ...doc,
-      slug,
-      tags: parseList(doc.meta.tags),
-      link: doc.meta.link,
-      cover: doc.meta.cover,
-      year: doc.meta.year,
-      nda: doc.meta.nda === 'true',
-    }
-  })
+const frameRaw = splitByLang(frameFiles)
+
+export const frameDocs: Record<Lang, Record<string, MarkdownDoc>> = {
+  ru: Object.fromEntries(Object.entries(frameRaw.ru).map(([slug, raw]) => [slug, toDoc(raw)])),
+  en: Object.fromEntries(Object.entries(frameRaw.en).map(([slug, raw]) => [slug, toDoc(raw)])),
+}
+
+/** Документ фрейма с фолбэком на русский */
+export function getFrameDoc(lang: Lang, slug: string): MarkdownDoc {
+  return frameDocs[lang][slug] ?? frameDocs.ru[slug]
+}
+
+function toProject(slug: string, raw: string): ProjectDoc {
+  const doc = toDoc(raw)
+  return {
+    ...doc,
+    slug,
+    tags: parseList(doc.meta.tags),
+    link: doc.meta.link,
+    cover: doc.meta.cover,
+    year: doc.meta.year,
+    nda: doc.meta.nda === 'true',
+  }
+}
+
+const projectRaw = splitByLang(projectFiles)
+
+const projectsRu: ProjectDoc[] = Object.entries(projectRaw.ru)
+  .map(([slug, raw]) => toProject(slug, raw))
   .sort((a, b) => a.slug.localeCompare(b.slug))
+
+/** Английский список повторяет порядок русского; недостающие кейсы — фолбэк */
+export const projectsByLang: Record<Lang, ProjectDoc[]> = {
+  ru: projectsRu,
+  en: projectsRu.map((p) => (projectRaw.en[p.slug] ? toProject(p.slug, projectRaw.en[p.slug]) : p)),
+}
+
+export const projects = projectsRu

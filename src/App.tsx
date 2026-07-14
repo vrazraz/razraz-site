@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { blogPosts, projects, site } from './content'
+import { blogPosts, projectsByLang, site } from './content'
+import { useI18n } from './i18n'
 import { useHashRoute, useIsMobile, useTheme } from './hooks'
 import { CanvasView } from './components/CanvasView'
 import { StandardView } from './components/StandardView'
@@ -37,6 +38,7 @@ function useMetrika(id: string | undefined) {
 }
 
 export default function App() {
+  const { lang } = useI18n()
   const { theme, toggleTheme } = useTheme()
   const { route, navigate } = useHashRoute()
   const isMobile = useIsMobile()
@@ -54,6 +56,7 @@ export default function App() {
   useMetrika(site.metrikaId || undefined)
 
   const post = route.postId ? blogPosts.find((p) => p.id === route.postId) ?? null : null
+  const projects = projectsByLang[lang]
   const projectIndex = route.projectSlug
     ? projects.findIndex((p) => p.slug === route.projectSlug)
     : -1

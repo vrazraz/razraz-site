@@ -5,6 +5,7 @@ import { BottomNav } from './BottomNav'
 import { GrainOverlay, StandardDecor, Vignette } from './Decor'
 import { ViewSwitcher, type ViewMode } from './ViewSwitcher'
 import { lampDelayStyle } from './FrameShell'
+import { useI18n } from '../i18n'
 
 interface Props {
   route: Route
@@ -17,6 +18,7 @@ interface Props {
 
 /** Стандартный режим: обычная вертикальная страница вместо канваса */
 export function StandardView({ route, navigate, theme, onToggleTheme, viewMode, onChangeView }: Props) {
+  const { s } = useI18n()
   const refs = useRef<Record<string, HTMLElement | null>>({})
   const rootRef = useRef<HTMLDivElement | null>(null)
   const [visibleId, setVisibleId] = useState(route.section)
@@ -83,25 +85,25 @@ export function StandardView({ route, navigate, theme, onToggleTheme, viewMode, 
       <GrainOverlay />
       <StandardDecor />
       <div className="standard__inner">
-        {SECTIONS.map((s) => (
+        {SECTIONS.map((sec) => (
           <section
-            key={s.id}
+            key={sec.id}
             ref={(el) => {
-              refs.current[s.id] = el
+              refs.current[sec.id] = el
             }}
             className="standard__section toon-panel"
-            aria-label={s.label}
+            aria-label={s.sections[sec.id]}
           >
             <img
-              key={visibleId === s.id ? 'on' : 'off'}
-              className={'frame__lamp' + (visibleId === s.id ? ' frame__lamp--on' : '')}
-              style={lampDelayStyle(s.id)}
-              src={`${import.meta.env.BASE_URL}${visibleId === s.id ? 'glight1.png' : 'glight2.png'}`}
+              key={visibleId === sec.id ? 'on' : 'off'}
+              className={'frame__lamp' + (visibleId === sec.id ? ' frame__lamp--on' : '')}
+              style={lampDelayStyle(sec.id)}
+              src={`${import.meta.env.BASE_URL}${visibleId === sec.id ? 'glight1.png' : 'glight2.png'}`}
               alt=""
               aria-hidden="true"
               draggable={false}
             />
-            <div className="standard__body">{s.render(navigate)}</div>
+            <div className="standard__body">{sec.render(navigate)}</div>
           </section>
         ))}
       </div>

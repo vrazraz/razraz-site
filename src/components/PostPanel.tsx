@@ -1,10 +1,11 @@
 import { useEffect, useRef } from 'react'
 import type { BlogPost } from '../content'
 import type { Theme } from '../hooks'
-
-const fmt = new Intl.DateTimeFormat('ru', { day: 'numeric', month: 'long', year: 'numeric' })
+import { useI18n } from '../i18n'
 
 export function PostPanel({ post, theme, onClose }: { post: BlogPost; theme: Theme; onClose: () => void }) {
+  const { s } = useI18n()
+  const fmt = new Intl.DateTimeFormat(s.dateLocale, { day: 'numeric', month: 'long', year: 'numeric' })
   const holder = useRef<HTMLDivElement | null>(null)
 
   /* Официальный embed-виджет Telegram */
@@ -41,14 +42,14 @@ export function PostPanel({ post, theme, onClose }: { post: BlogPost; theme: The
             <h3 className="post-panel__title">{post.title}</h3>
             <span className="post-panel__date">{fmt.format(new Date(post.date))}</span>
           </div>
-          <button className="post-panel__close" onClick={onClose} aria-label="Закрыть">
+          <button className="post-panel__close" onClick={onClose} aria-label={s.close}>
             ✕
           </button>
         </header>
         <div className="post-panel__body frame-scroll">
           <div ref={holder} data-nodrag />
           <a className="post-panel__source interactive" href={post.url} target="_blank" rel="noreferrer">
-            Открыть в Telegram ↗
+            {s.openInTelegram}
           </a>
         </div>
       </aside>

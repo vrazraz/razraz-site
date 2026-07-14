@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import type { CanvasEngine } from '../canvas/useCanvasEngine'
+import { useI18n } from '../i18n'
 
 const BOX_W = 150
 const BOX_H = 96
 const WORLD_PAD = 160
 
 export function Minimap({ engine }: { engine: CanvasEngine }) {
+  const { s } = useI18n()
   const [hover, setHover] = useState(false)
   const root = engine.rootRef.current
   const rects = Object.entries(engine.positions)
@@ -53,13 +55,13 @@ export function Minimap({ engine }: { engine: CanvasEngine }) {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <div className="micro-label">Карта</div>
+      <div className="micro-label">{s.map}</div>
       <div
         className="minimap__box interactive"
         style={{ width: BOX_W, height: BOX_H }}
         onClick={onPick}
         role="button"
-        aria-label="Мини-карта: клик перемещает вьюпорт"
+        aria-label={s.minimapAria}
       >
         {rects.map(([id, r]) => {
           const p = toBox(r.x, r.y)

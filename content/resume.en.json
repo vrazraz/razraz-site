@@ -1,0 +1,46 @@
+{
+  "timeline": [
+    {
+      "period": "Aug 2025 — present",
+      "role": "Senior product designer",
+      "company": "Alfa-Bank",
+      "details": "Alfa Predict — an agent platform with a suite of MLOps and LLM tools. AIDA — an AI platform for document recognition and validation."
+    },
+    {
+      "period": "May 2024 — Jun 2025",
+      "role": "Senior product designer",
+      "company": "Positive Technologies",
+      "details": "PT NGFW — the firewall management system. Worked closely on scenarios with the PM, analyst and frontend engineer. Reworked the navigation; designed IPsec connections, ICAP, BGP/OSPF profiles, AS-path and various log views. Created and rolled out a supporting design system: a Figma library, Confluence specs and help with React component adoption — product time to market dropped by 24% on average."
+    },
+    {
+      "period": "Feb 2023 — May 2024",
+      "role": "Senior product designer",
+      "company": "Infotecs",
+      "details": "AmTIP (a knowledge base with a relationship graph) and IM (a security incident management system). Migrated both products to the Submarine design system."
+    },
+    {
+      "period": "Jan 2021 — Feb 2023",
+      "role": "Product designer",
+      "company": "Infotecs",
+      "details": "Ampire cyber range — a training system that emulates hacker attacks. Built the Submarine design system, redesigned the product on top of it, moved everything to tokens and components, designed the new RedTeam mode."
+    },
+    {
+      "period": "Jun 2019 — Jan 2021",
+      "role": "Product designer",
+      "company": "Leadfrog GmbH",
+      "details": "Designed a mobile app for collecting contacts at trade shows and a CRM system. Built a presentation prototype for entering the European market and created an interactive expo map editor from scratch."
+    },
+    {
+      "period": "Dec 2018 — Jun 2019",
+      "role": "Web designer",
+      "company": "Site-uper",
+      "details": "Designed websites and mobile apps for the studio's clients."
+    },
+    {
+      "period": "Nov 2014 — Dec 2018",
+      "role": "Graphic designer",
+      "company": "Own print shop",
+      "details": "Business cards, banners, retouching, large-format printing, print-ready layouts."
+    }
+  ]
+}

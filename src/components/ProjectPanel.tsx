@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import type { ProjectDoc } from '../content'
+import { useI18n } from '../i18n'
 
 export function ProjectPanel({
   project,
@@ -14,6 +15,7 @@ export function ProjectPanel({
   onOpen: (slug: string) => void
   onClose: () => void
 }) {
+  const { s } = useI18n()
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
@@ -40,8 +42,8 @@ export function ProjectPanel({
               className="post-panel__close"
               disabled={!prevSlug}
               onClick={() => prevSlug && onOpen(prevSlug)}
-              aria-label="Предыдущий кейс"
-              title="Предыдущий кейс"
+              aria-label={s.prevCase}
+              title={s.prevCase}
             >
               ‹
             </button>
@@ -49,12 +51,12 @@ export function ProjectPanel({
               className="post-panel__close"
               disabled={!nextSlug}
               onClick={() => nextSlug && onOpen(nextSlug)}
-              aria-label="Следующий кейс"
-              title="Следующий кейс"
+              aria-label={s.nextCase}
+              title={s.nextCase}
             >
               ›
             </button>
-            <button className="post-panel__close" onClick={onClose} aria-label="Закрыть">
+            <button className="post-panel__close" onClick={onClose} aria-label={s.close}>
               ✕
             </button>
           </div>

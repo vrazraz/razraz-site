@@ -1,20 +1,28 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { blogPosts } from '../content'
-
-const fmt = new Intl.DateTimeFormat('ru', { day: 'numeric', month: 'long', year: 'numeric' })
+import { useI18n } from '../i18n'
 
 const VISIBLE_POSTS = 7
 
 export function BlogFrame({ onOpenPost }: { onOpenPost: (id: string) => void }) {
+  const { lang, s } = useI18n()
   const [expanded, setExpanded] = useState(false)
+  const fmt = useMemo(
+    () => new Intl.DateTimeFormat(s.dateLocale, { day: 'numeric', month: 'long', year: 'numeric' }),
+    [s.dateLocale],
+  )
   const shown = expanded ? blogPosts : blogPosts.slice(0, VISIBLE_POSTS)
   return (
     <>
       <h2 className="frame-title frame-title--md">
-        Блог<span className="accent">.</span>
+        {s.sections.blog}
+        <span className="accent">.</span>
       </h2>
-      <p className="frame-subtitle">Посты приезжают из Telegram-канала</p>
-      {blogPosts.length === 0 && <p className="md">Пока пусто — скоро здесь появятся посты.</p>}
+      <p className="frame-subtitle">
+        {s.blogSubtitle}
+        {lang === 'en' ? ` · ${s.blogNote}` : ''}
+      </p>
+      {blogPosts.length === 0 && <p className="md">{s.blogEmpty}</p>}
       <div className="post-list">
         {shown.map((p) => (
           <button key={p.id} className="post-item" onClick={() => onOpenPost(p.id)}>
@@ -28,7 +36,7 @@ export function BlogFrame({ onOpenPost }: { onOpenPost: (id: string) => void }) 
       </div>
       {blogPosts.length > VISIBLE_POSTS && (
         <button className="blog-more interactive" onClick={() => setExpanded((e) => !e)}>
-          {expanded ? 'Свернуть' : `Смотреть все (${blogPosts.length})`}
+          {expanded ? s.collapse : s.seeAll(blogPosts.length)}
         </button>
       )}
     </>

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useI18n } from '../i18n'
 
 const NDA_PASSWORD = '1234'
 
@@ -13,6 +14,7 @@ export function PasswordGate({
   onClose: () => void
   onTripleFail?: () => void
 }) {
+  const { s } = useI18n()
   const [value, setValue] = useState('')
   const [error, setError] = useState(false)
   const fails = useRef(0)
@@ -42,11 +44,16 @@ export function PasswordGate({
   return (
     <>
       <div className="post-backdrop" onClick={onClose} />
-      <div className={'pass-gate toon-panel' + (error ? ' pass-gate--error' : '')} role="dialog" aria-label="Кейс под NDA">
+      <div
+        className={'pass-gate toon-panel' + (error ? ' pass-gate--error' : '')}
+        role="dialog"
+        aria-label={s.ndaTitle}
+      >
         <h3 className="pass-gate__title">
-          Кейс под NDA<span className="accent">.</span>
+          {s.ndaTitle}
+          <span className="accent">.</span>
         </h3>
-        <p className="pass-gate__text">«{title}» защищён паролем — запросите его у Виталия.</p>
+        <p className="pass-gate__text">{s.ndaText(title)}</p>
         <form
           className="pass-gate__row"
           onSubmit={(e) => {
@@ -59,19 +66,19 @@ export function PasswordGate({
             className="pass-gate__input"
             type="password"
             inputMode="numeric"
-            placeholder="Пароль"
+            placeholder={s.password}
             value={value}
             onChange={(e) => {
               setValue(e.target.value)
               setError(false)
             }}
-            aria-label="Пароль"
+            aria-label={s.password}
           />
           <button type="submit" className="pass-gate__submit interactive">
-            Открыть
+            {s.open}
           </button>
         </form>
-        {error && <p className="pass-gate__error">Неверный пароль</p>}
+        {error && <p className="pass-gate__error">{s.wrongPassword}</p>}
       </div>
     </>
   )

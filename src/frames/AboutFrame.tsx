@@ -1,9 +1,11 @@
 import { useState } from 'react'
-import { frameDocs, site } from '../content'
+import { getFrameDoc, site } from '../content'
+import { useI18n } from '../i18n'
 
 export function AboutFrame() {
-  const doc = frameDocs.about
-  const title = (doc.meta.title ?? 'Обо мне').replace(/\.$/, '')
+  const { lang, s } = useI18n()
+  const doc = getFrameDoc(lang, 'about')
+  const title = (doc.meta.title ?? s.sections.about).replace(/\.$/, '')
   const [avatarOk, setAvatarOk] = useState(true)
   const [copied, setCopied] = useState(false)
 
@@ -31,6 +33,7 @@ export function AboutFrame() {
         }
       })
   }
+
   return (
     <>
       <header className="about-head">
@@ -39,7 +42,7 @@ export function AboutFrame() {
             <span className="about-avatar">
               <img
                 src={`${import.meta.env.BASE_URL}avatar.webp`}
-                alt={site.name}
+                alt={s.siteName}
                 width={104}
                 height={104}
                 onError={() => setAvatarOk(false)}
@@ -57,14 +60,14 @@ export function AboutFrame() {
       </header>
       <div className="md" dangerouslySetInnerHTML={{ __html: doc.html }} />
       <div className="chips">
-        {site.social.map((s) =>
-          s.label === 'Gmail' ? (
-            <button key={s.label} className="chip interactive" onClick={copyEmail}>
-              {copied ? 'Скопировано ✓' : 'Email — копировать'}
+        {site.social.map((so) =>
+          so.label === 'Gmail' ? (
+            <button key={so.label} className="chip interactive" onClick={copyEmail}>
+              {copied ? s.copied : s.copyEmail}
             </button>
           ) : (
-            <a key={s.label} className="chip interactive" href={s.url} target="_blank" rel="noreferrer">
-              {s.label}
+            <a key={so.label} className="chip interactive" href={so.url} target="_blank" rel="noreferrer">
+              {so.label}
             </a>
           ),
         )}

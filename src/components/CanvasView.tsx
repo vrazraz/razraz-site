@@ -11,6 +11,7 @@ import { CursorHint } from './CursorHint'
 import { ClickBurst } from './ClickBurst'
 import { ViewSwitcher, type ViewMode } from './ViewSwitcher'
 import { GhostCursors } from './GhostCursors'
+import { useI18n } from '../i18n'
 
 interface Props {
   route: Route
@@ -23,6 +24,7 @@ interface Props {
 }
 
 export function CanvasView({ route, navigate, theme, onToggleTheme, shakeFrame, viewMode, onChangeView }: Props) {
+  const { s } = useI18n()
   const engine = useCanvasEngine(layout)
   const started = useRef(false)
 
@@ -65,17 +67,17 @@ export function CanvasView({ route, navigate, theme, onToggleTheme, shakeFrame, 
       >
         <CanvasDecor scale={t.scale} spaceHeld={engine.spaceHeld} />
         <GhostCursors scale={t.scale} />
-        {SECTIONS.map((s) => (
+        {SECTIONS.map((sec) => (
           <FrameShell
-            key={s.id}
-            id={s.id}
-            title={s.label}
-            rect={engine.positions[s.id]}
-            active={engine.activeFrame === s.id}
+            key={sec.id}
+            id={sec.id}
+            title={s.sections[sec.id]}
+            rect={engine.positions[sec.id]}
+            active={engine.activeFrame === sec.id}
             engine={engine}
-            shake={shakeFrame === s.id}
+            shake={shakeFrame === sec.id}
           >
-            {s.render(navigate)}
+            {sec.render(navigate)}
           </FrameShell>
         ))}
       </div>

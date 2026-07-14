@@ -4,6 +4,7 @@ import type { Route, Theme } from '../hooks'
 import { BottomNav } from './BottomNav'
 import { GrainOverlay, Vignette } from './Decor'
 import { lampDelayStyle } from './FrameShell'
+import { useI18n } from '../i18n'
 
 interface Props {
   route: Route
@@ -16,6 +17,7 @@ const SWIPE_DISTANCE = 60
 const SWIPE_VELOCITY = 0.5
 
 export function MobileFeed({ route, navigate, theme, onToggleTheme }: Props) {
+  const { s } = useI18n()
   const index = Math.max(
     0,
     SECTIONS.findIndex((s) => s.id === route.section),
@@ -71,19 +73,23 @@ export function MobileFeed({ route, navigate, theme, onToggleTheme }: Props) {
         onTouchEnd={onTouchEnd}
         onTouchCancel={onTouchEnd}
       >
-        {SECTIONS.map((s) => (
-          <div key={s.id} className="feed__slide">
-            <section className="feed__section toon-panel" aria-label={s.label} aria-hidden={s.id !== route.section}>
+        {SECTIONS.map((sec) => (
+          <div key={sec.id} className="feed__slide">
+            <section
+              className="feed__section toon-panel"
+              aria-label={s.sections[sec.id]}
+              aria-hidden={sec.id !== route.section}
+            >
               <img
-                key={s.id === route.section ? 'on' : 'off'}
-                className={'frame__lamp' + (s.id === route.section ? ' frame__lamp--on' : '')}
-                style={lampDelayStyle(s.id)}
-                src={`${import.meta.env.BASE_URL}${s.id === route.section ? 'glight1.png' : 'glight2.png'}`}
+                key={sec.id === route.section ? 'on' : 'off'}
+                className={'frame__lamp' + (sec.id === route.section ? ' frame__lamp--on' : '')}
+                style={lampDelayStyle(sec.id)}
+                src={`${import.meta.env.BASE_URL}${sec.id === route.section ? 'glight1.png' : 'glight2.png'}`}
                 alt=""
                 aria-hidden="true"
                 draggable={false}
               />
-              <div className="feed__body">{s.render(navigate)}</div>
+              <div className="feed__body">{sec.render(navigate)}</div>
             </section>
           </div>
         ))}
