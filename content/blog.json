@@ -1,6 +1,12 @@
 {
   "posts": [
     {
+      "id": "982",
+      "url": "https://t.me/prouxui/982",
+      "title": "Пост №982",
+      "date": "2026-07-28"
+    },
+    {
       "id": "980",
       "url": "https://t.me/prouxui/980",
       "title": "Размышление модепи (reasoning) в claude code Отличаются от разрешения в обычном…",
