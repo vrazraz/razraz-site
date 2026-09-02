@@ -1,6 +1,12 @@
 {
   "posts": [
     {
+      "id": "1000",
+      "url": "https://t.me/prouxui/1000",
+      "title": "Омайнгот&#33; ",
+      "date": "2026-09-02"
+    },
+    {
       "id": "999",
       "url": "https://t.me/prouxui/999",
       "title": "Фейбл 5.1 релизнули.",
