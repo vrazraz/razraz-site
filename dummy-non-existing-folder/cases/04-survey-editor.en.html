@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Interview survey editor — Vitaly Matitsyn</title>
+  <meta name="description" content="Problem. Building surveys for trade shows was inflexible and hard to understand. We needed a new editor version that marketers could actually use: surveys are b" />
+  <link rel="canonical" href="https://razraz.pro/cases/04-survey-editor.en.html" />
+  <link rel="alternate" hreflang="ru" href="https://razraz.pro/cases/04-survey-editor.html" />
+  <link rel="alternate" hreflang="en" href="https://razraz.pro/cases/04-survey-editor.en.html" />
+  <link rel="alternate" hreflang="x-default" href="https://razraz.pro/cases/04-survey-editor.html" />
+  <link rel="icon" type="image/png" href="https://razraz.pro/glight1.png" />
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 760px; margin: 40px auto; padding: 0 20px; line-height: 1.6; color: #1c1c20; }
+    img, video { max-width: 100%; height: auto; border-radius: 8px; }
+    li { margin-bottom: 10px; }
+    time, .meta { color: #777; font-size: 0.85em; }
+    .note { padding: 14px 16px; background: #f4f4f5; border-radius: 10px; }
+  </style>
+</head>
+<body>
+  <p><a href="../">← Vitaly Matitsyn — product designer</a></p>
+  <h1>Interview survey editor</h1>
+  <p class="meta">2021</p>
+<p><img src="../survey-editor-hero.webp" alt="The new survey editor: question nodes with connections on a canvas"></p>
+<p><strong>Problem.</strong> Building surveys for trade shows was inflexible and hard to understand. We needed a new editor version that marketers could actually use: surveys are built in the desktop version before the show and filled in inside the app at the show itself.</p>
+<h2>Research</h2>
+<p>Competitive analysis, in-depth interviews with managers, field studies. The takeaways:</p>
+<ul>
+<li>Many companies don’t build surveys themselves and are happy to pay our managers to do it</li>
+<li>Surveys are often deep and heavily branched</li>
+<li>Requests to create surveys arrive right in the middle of a show</li>
+<li>Most participants don’t understand how to link an answer to the next question</li>
+<li>Some question types are missing: city picker, product picker, price range</li>
+</ul>
+<h2>Conclusions</h2>
+<p>Surveys will be built by a trained person (our support or the company’s marketer). We need: convenient branching, an intuitive way to link questions, more question types, minimal creation time and a foundation for future features.</p>
+<h2>How surveys work</h2>
+<p><img src="../survey-flow.webp" alt="How it works: a participant builds the survey in the web account or via support, and it ships to the app"></p>
+<h2>The old editor</h2>
+<p><img src="../survey-editor-old.webp" alt="The old survey editor: a long list of questions with a settings sidebar"></p>
+<p>Downsides: users didn’t understand how answers connect to questions, and the editor didn’t scale — deep nesting was impossible.</p>
+<h2>Implementation</h2>
+<p>For the new version I chose <strong>nodes</strong> — a pattern from signal-processing tools and mind maps: they visualize relationships and reduce cognitive load. A branched survey is assembled on a canvas from connected nodes:</p>
+<p><img src="../survey-editor-nodes.webp" alt="The node editor: an answer of one question linked to the next question"></p>
+<p>On the user’s device the survey unfolds into a regular step-by-step questionnaire:</p>
+<p><img src="../survey-mobile.webp" alt="The survey on a mobile device: single and multiple choice, an important-question marker"></p>
+
+  <p><a href="../#/projects/04-survey-editor">Open the case on the site →</a></p>
+</body>
+</html>

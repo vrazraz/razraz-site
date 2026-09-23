@@ -19,7 +19,7 @@ export function HackerBubble({ onDone }: { onDone: () => void }) {
       className={'hacker-bubble ray-glow ray-glow--lit' + (hiding ? ' hacker-bubble--hide' : '')}
       aria-hidden="true"
     >
-      <img src={`${import.meta.env.BASE_URL}hacker-bubble.png`} alt="" draggable={false} />
+      <img src={`${import.meta.env.BASE_URL}hacker-bubble.webp`} alt="" draggable={false} />
     </div>
   )
 }

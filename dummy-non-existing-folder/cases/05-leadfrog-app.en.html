@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LeadFrog app — Vitaly Matitsyn</title>
+  <meta name="description" content="About the product. A mobile app — part of an ecosystem for collecting and processing contacts at trade shows: registration, a business card/QR/barcode scanner, " />
+  <link rel="canonical" href="https://razraz.pro/cases/05-leadfrog-app.en.html" />
+  <link rel="alternate" hreflang="ru" href="https://razraz.pro/cases/05-leadfrog-app.html" />
+  <link rel="alternate" hreflang="en" href="https://razraz.pro/cases/05-leadfrog-app.en.html" />
+  <link rel="alternate" hreflang="x-default" href="https://razraz.pro/cases/05-leadfrog-app.html" />
+  <link rel="icon" type="image/png" href="https://razraz.pro/glight1.png" />
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 760px; margin: 40px auto; padding: 0 20px; line-height: 1.6; color: #1c1c20; }
+    img, video { max-width: 100%; height: auto; border-radius: 8px; }
+    li { margin-bottom: 10px; }
+    time, .meta { color: #777; font-size: 0.85em; }
+    .note { padding: 14px 16px; background: #f4f4f5; border-radius: 10px; }
+  </style>
+</head>
+<body>
+  <p><a href="../">← Vitaly Matitsyn — product designer</a></p>
+  <h1>LeadFrog app</h1>
+  <p class="meta">2021</p>
+<p><img src="../leadfrog-hero.webp" alt="LeadFrog app: a contact card and an interactive expo map"></p>
+<p><strong>About the product.</strong> A mobile app — part of an ecosystem for collecting and processing contacts at trade shows: registration, a business card/QR/barcode scanner, the business program, an interactive map, surveys, notes, collected data views, chats between attendees.</p>
+<h2>Specifics and research</h2>
+<p>The product’s peculiarity is intermittent usage: some users open the app three days a year, while their show is on. I ran research on my own initiative, mostly outside working hours: field trips to trade shows (the most effective), metrics on every action, hallway tests, interviews with in-house expo experts, discussions with the founder, task-based session recordings, secondary research of competitors, reviews with design communities.</p>
+<h2>Registration</h2>
+<p>The old scheme: heavy dependence on the organizer (“no contract — no users”), a new account for every show, no accounts for visitors at all:</p>
+<p><img src="../leadfrog-reg-old.webp" alt="The old registration scheme: from an organizer contract to badge-scan login"></p>
+<p>The new scheme fixes all of that and adds invite codes (deep links were postponed due to tight deadlines):</p>
+<p><img src="../leadfrog-reg-new.webp" alt="The new registration scheme: a personal phone-based account, creating a company and a show"></p>
+<p>The show picker: search by name, adding a new show, sorting by date; “your” shows come first (three by default, the rest under a spoiler):</p>
+<p><img src="../leadfrog-expo-select.webp" alt="The show picker: my shows first, add by name"></p>
+<p>The full registration flow — sign-in, choosing a workspace and a show:</p>
+<p><img src="../leadfrog-reg-flow.webp" alt="Screen map: sign-in, registration, workspace and show selection"></p>
+<h2>Scanner</h2>
+<p>The scanner captures a contact from a business card, barcode or QR code and recognizes related entities (products, companies). Field checks exposed a gap between expectation and reality:</p>
+<p><img src="../leadfrog-scanner-expected.webp" alt="Expectation: the Figma mockup with a clearly visible frame"></p>
+<p><img src="../leadfrog-scanner-reality.webp" alt="Reality: in working conditions the recognition frame is barely visible"></p>
+<p>Not seeing the frame, users scanned only part of the card and got unusable data; the flash and close icons got lost too:</p>
+<p><img src="../leadfrog-scanner-baddata.webp" alt="The result: only scraps of the card data were recognized"></p>
+<p>After the redesign the frame and controls are readable, and manual input was added for cases when scanning is impossible:</p>
+<p><img src="../leadfrog-scanner-redesign.webp" alt="The scanner after the redesign: a contrast backdrop, a hint and a manual-create button"></p>
+<p><img src="../leadfrog-custom-contact.webp" alt="Screen map of manual contact creation: phone, email, website, address, company, badge"></p>
+<h2>Business program</h2>
+<p>Requested by our biggest partner-organizer: an exhibitor catalog, show sections and news (filled in by the organizer via a markdown editor in the admin panel), plus a COVID restrictions block:</p>
+<p><img src="../leadfrog-bp-flow.webp" alt="Business program map: sections, exhibitor catalog, news, favorites"></p>
+<p>Show sections with visitor analytics and the section’s exhibitors:</p>
+<p><img src="../leadfrog-bp-sections.webp" alt="The “Finishing materials” section with visitor stats"></p>
+<p>News is purely informational and can link to contacts:</p>
+<p><img src="../leadfrog-bp-news.webp" alt="Show news: a webinar announcement with the speaker photo"></p>
+<p>The exhibitor catalog: find an exhibitor by booth or name, add to favorites, drill into details:</p>
+<p><img src="../leadfrog-bp-catalog.webp" alt="Exhibitor catalog: booth number, company, favorites"></p>
+
+  <p><a href="../#/projects/05-leadfrog-app">Open the case on the site →</a></p>
+</body>
+</html>

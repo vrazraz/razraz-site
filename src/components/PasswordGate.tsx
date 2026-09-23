@@ -20,6 +20,12 @@ export function PasswordGate({
   const fails = useRef(0)
   const inputRef = useRef<HTMLInputElement>(null)
 
+  /* Пузырь «Ай да хакер!» грузится заранее, чтобы при верном пароле
+     появиться мгновенно, а не прорисовываться по частям */
+  useEffect(() => {
+    new Image().src = `${import.meta.env.BASE_URL}hacker-bubble.webp`
+  }, [])
+
   useEffect(() => {
     inputRef.current?.focus()
     const onKey = (e: KeyboardEvent) => {

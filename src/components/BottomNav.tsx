@@ -45,34 +45,47 @@ export function BottomNav({ sections, active, onSelect, theme, onToggleTheme, sc
 
   /* Поповер прижимается к шестерёнке, где бы она ни оказалась
      (навигация по центру, на мобиле может быть проскроллена) */
-  const toggleSettings = () => {
+  const placePopover = () => {
     const gear = gearRef.current
-    if (!settingsOpen && gear) {
-      const r = gear.getBoundingClientRect()
-      setPopPos({
-        right: Math.max(8, window.innerWidth - r.right),
-        bottom: Math.max(8, window.innerHeight - r.top + 10),
-      })
-    }
+    if (!gear) return
+    const r = gear.getBoundingClientRect()
+    setPopPos({
+      right: Math.max(8, window.innerWidth - r.right),
+      bottom: Math.max(8, window.innerHeight - r.top + 10),
+    })
+  }
+
+  const toggleSettings = () => {
+    if (!settingsOpen) placePopover()
     setSettingsOpen((o) => !o)
   }
 
-  /* Клик мимо и Esc закрывают настройки */
+  /* Пока открыт: следует за шестерёнкой при ресайзе и прокрутке
+     мобильной навигации; клик мимо закрывает; Esc закрывает и
+     возвращает фокус на шестерёнку */
   useEffect(() => {
     if (!settingsOpen) return
+    const nav = navRef.current
+    popRef.current?.querySelector<HTMLElement>('button')?.focus()
     const onDown = (e: PointerEvent) => {
       const t = e.target as Node
-      if (navRef.current?.contains(t) || popRef.current?.contains(t)) return
+      if (nav?.contains(t) || popRef.current?.contains(t)) return
       setSettingsOpen(false)
     }
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setSettingsOpen(false)
+      if (e.key !== 'Escape') return
+      setSettingsOpen(false)
+      gearRef.current?.focus()
     }
     window.addEventListener('pointerdown', onDown)
     window.addEventListener('keydown', onKey)
+    window.addEventListener('resize', placePopover)
+    nav?.addEventListener('scroll', placePopover)
     return () => {
       window.removeEventListener('pointerdown', onDown)
       window.removeEventListener('keydown', onKey)
+      window.removeEventListener('resize', placePopover)
+      nav?.removeEventListener('scroll', placePopover)
     }
   }, [settingsOpen])
 

@@ -4,7 +4,7 @@ import { decodeEntities, parsePosts, mergePosts } from '../scripts/telegram-lib.
 const FIXTURE = `
 <div class="tgme_widget_message_wrap js-widget_message_wrap">
   <div class="tgme_widget_message" data-post="prouxui/974">
-    <div class="tgme_widget_message_text js-message_text" dir="auto">А у меня новая ачивка) Она навела меня на мысль.<br/>Вторая строка</div>
+    <div class="tgme_widget_message_text js-message_text" dir="auto">А у меня новая ачивка) Она навела меня на мысль&#33; <br/>Вторая строка</div>
     <time datetime="2026-07-06T09:15:04+00:00" class="time"></time>
   </div>
 </div>
@@ -22,10 +22,20 @@ const FIXTURE = `
 `
 
 describe('decodeEntities', () => {
-  it('убирает теги и раскодирует сущности', () => {
-    expect(decodeEntities('a &amp; b<br/>c <b>жирный</b>&nbsp;&#39;x&#039;'.replace('&#039;', '&#39;'))).toBe(
-      "a & b\nc жирный 'x'",
-    )
+  it('убирает теги и раскодирует именованные сущности', () => {
+    expect(decodeEntities('a &amp; b<br/>c <b>жирный</b>&nbsp;&#039;x&#39;')).toBe("a & b\nc жирный 'x'")
+  })
+
+  it('раскодирует любые числовые сущности — десятичные и шестнадцатеричные', () => {
+    expect(decodeEntities('Омайнгот&#33; Бррр&#x21; &#8212; тире')).toBe('Омайнгот! Бррр! — тире')
+  })
+
+  it('не раскодирует дважды: &amp;#33; остаётся буквальным текстом', () => {
+    expect(decodeEntities('код &amp;#33;')).toBe('код &#33;')
+  })
+
+  it('неизвестные сущности оставляет как есть', () => {
+    expect(decodeEntities('&unknown; и &#0;')).toBe('&unknown; и &#0;')
   })
 })
 
@@ -39,7 +49,7 @@ describe('parsePosts', () => {
   })
 
   it('берёт первую строку как заголовок', () => {
-    expect(posts[0].title).toBe('А у меня новая ачивка) Она навела меня на мысль.')
+    expect(posts[0].title).toBe('А у меня новая ачивка) Она навела меня на мысль!')
   })
 
   it('обрезает длинные заголовки до 80 символов с многоточием', () => {

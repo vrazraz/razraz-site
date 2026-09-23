@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  actions: write # запуск деплоя после импорта
 
 jobs:
   sync:
@@ -18,6 +19,7 @@ jobs:
           node-version: 22
       - run: node scripts/sync-telegram.mjs
       - name: Commit new posts
+        id: commit
         run: |
           if git diff --quiet content/blog.json; then
             echo "Изменений нет"
@@ -28,3 +30,11 @@ jobs:
           git add content/blog.json
           git commit -m "blog: автоимпорт постов из Telegram"
           git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      # Пуш от GITHUB_TOKEN не запускает другие workflow — поэтому деплой
+      # вызывается явно: workflow_dispatch входит в исключения из этого правила
+      - name: Trigger deploy
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy.yml --ref main

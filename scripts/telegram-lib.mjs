@@ -2,16 +2,22 @@
 
 const TITLE_MAX = 80
 
+const NAMED_ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ' }
+
+/** Раскодирует именованные и числовые (&#33;, &#x21;) сущности.
+ *  &amp; обрабатывается в том же проходе, поэтому «&amp;#33;» даёт
+ *  буквальный «&#33;», а не «!». */
 export function decodeEntities(s) {
   return s
     .replace(/<br\s*\/?>/gi, '\n')
     .replace(/<[^>]+>/g, '')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#0?39;/g, "'")
-    .replace(/&nbsp;/g, ' ')
+    .replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (whole, code) => {
+      if (code[0] === '#') {
+        const n = code[1].toLowerCase() === 'x' ? parseInt(code.slice(2), 16) : parseInt(code.slice(1), 10)
+        return Number.isFinite(n) && n > 0 && n <= 0x10ffff ? String.fromCodePoint(n) : whole
+      }
+      return NAMED_ENTITIES[code.toLowerCase()] ?? whole
+    })
     .trim()
 }
 
@@ -26,7 +32,7 @@ export function parsePosts(pageHtml, channel) {
 
     const textMatch = /class="tgme_widget_message_text[^"]*"[^>]*>([\s\S]*?)<\/div>/.exec(block)
     const text = textMatch ? decodeEntities(textMatch[1]) : ''
-    const firstLine = text.split('\n').find((l) => l.trim()) ?? ''
+    const firstLine = (text.split('\n').find((l) => l.trim()) ?? '').trim()
     const title =
       firstLine.length > TITLE_MAX ? `${firstLine.slice(0, TITLE_MAX - 1)}…` : firstLine || `Пост №${id}`
 

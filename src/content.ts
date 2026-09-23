@@ -1,4 +1,3 @@
-import { marked } from 'marked'
 import siteJson from '../content/site.json'
 import layoutJson from '../content/layout.json'
 import blogJson from '../content/blog.json'
@@ -53,20 +52,6 @@ export const resumeTimelines: Record<Lang, TimelineEntry[]> = {
 
 export const blogPosts: BlogPost[] = (blogJson.posts as BlogPost[]).filter((p) => !p.hidden)
 
-/** Минимальный разбор фронтматтера: строки `key: value` между `---`.
- *  Значения-списки вида [a, b] превращаются в массивы. */
-function parseFrontmatter(raw: string): { meta: Record<string, string>; body: string } {
-  const match = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?/.exec(raw)
-  if (!match) return { meta: {}, body: raw }
-  const meta: Record<string, string> = {}
-  for (const line of match[1].split(/\r?\n/)) {
-    const idx = line.indexOf(':')
-    if (idx === -1) continue
-    meta[line.slice(0, idx).trim()] = line.slice(idx + 1).trim()
-  }
-  return { meta, body: raw.slice(match[0].length) }
-}
-
 function parseList(value: string | undefined): string[] {
   if (!value) return []
   return value
@@ -76,48 +61,38 @@ function parseList(value: string | undefined): string[] {
     .filter(Boolean)
 }
 
-function toDoc(raw: string): MarkdownDoc {
-  const { meta, body } = parseFrontmatter(raw)
-  return { meta, html: marked.parse(body, { async: false }) }
-}
-
+/* Markdown разбирается при сборке плагином markdown-docs (vite.config.ts) */
 const frameFiles = import.meta.glob('../content/frames/*.md', {
-  query: '?raw',
+  query: '?doc',
   import: 'default',
   eager: true,
-}) as Record<string, string>
+}) as Record<string, MarkdownDoc>
 
 const projectFiles = import.meta.glob('../content/projects/*.md', {
-  query: '?raw',
+  query: '?doc',
   import: 'default',
   eager: true,
-}) as Record<string, string>
+}) as Record<string, MarkdownDoc>
 
 /** Файлы вида name.md — русские, name.en.md — английские */
-function splitByLang(files: Record<string, string>): Record<Lang, Record<string, string>> {
-  const out: Record<Lang, Record<string, string>> = { ru: {}, en: {} }
-  for (const [path, raw] of Object.entries(files)) {
+function splitByLang(files: Record<string, MarkdownDoc>): Record<Lang, Record<string, MarkdownDoc>> {
+  const out: Record<Lang, Record<string, MarkdownDoc>> = { ru: {}, en: {} }
+  for (const [path, doc] of Object.entries(files)) {
     const file = path.split('/').pop()!.replace(/\.md$/, '')
-    if (file.endsWith('.en')) out.en[file.slice(0, -3)] = raw
-    else out.ru[file] = raw
+    if (file.endsWith('.en')) out.en[file.slice(0, -3)] = doc
+    else out.ru[file] = doc
   }
   return out
 }
 
-const frameRaw = splitByLang(frameFiles)
-
-export const frameDocs: Record<Lang, Record<string, MarkdownDoc>> = {
-  ru: Object.fromEntries(Object.entries(frameRaw.ru).map(([slug, raw]) => [slug, toDoc(raw)])),
-  en: Object.fromEntries(Object.entries(frameRaw.en).map(([slug, raw]) => [slug, toDoc(raw)])),
-}
+const frameDocs = splitByLang(frameFiles)
 
 /** Документ фрейма с фолбэком на русский */
 export function getFrameDoc(lang: Lang, slug: string): MarkdownDoc {
   return frameDocs[lang][slug] ?? frameDocs.ru[slug]
 }
 
-function toProject(slug: string, raw: string): ProjectDoc {
-  const doc = toDoc(raw)
+function toProject(slug: string, doc: MarkdownDoc): ProjectDoc {
   return {
     ...doc,
     slug,
@@ -129,16 +104,14 @@ function toProject(slug: string, raw: string): ProjectDoc {
   }
 }
 
-const projectRaw = splitByLang(projectFiles)
+const projectDocs = splitByLang(projectFiles)
 
-const projectsRu: ProjectDoc[] = Object.entries(projectRaw.ru)
-  .map(([slug, raw]) => toProject(slug, raw))
+const projectsRu: ProjectDoc[] = Object.entries(projectDocs.ru)
+  .map(([slug, doc]) => toProject(slug, doc))
   .sort((a, b) => a.slug.localeCompare(b.slug))
 
 /** Английский список повторяет порядок русского; недостающие кейсы — фолбэк */
 export const projectsByLang: Record<Lang, ProjectDoc[]> = {
   ru: projectsRu,
-  en: projectsRu.map((p) => (projectRaw.en[p.slug] ? toProject(p.slug, projectRaw.en[p.slug]) : p)),
+  en: projectsRu.map((p) => (projectDocs.en[p.slug] ? toProject(p.slug, projectDocs.en[p.slug]) : p)),
 }
-
-export const projects = projectsRu

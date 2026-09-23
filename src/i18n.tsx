@@ -6,6 +6,9 @@ export type Lang = 'ru' | 'en'
 export const STR = {
   ru: {
     siteName: 'Виталий Матыцин',
+    docTitle: 'Виталий Матыцин — продуктовый дизайнер',
+    docDescription:
+      'AI-powered product designer: сложные интерфейсы (кибербез, MLOps, AI-native, B2B), дизайн-системы, паттерны AI-native продуктов. Портфолио, блог и резюме на бесконечном канвасе',
     sections: {
       about: 'Обо мне',
       projects: 'Проекты',
@@ -58,6 +61,9 @@ export const STR = {
   },
   en: {
     siteName: 'Vitaly Matitsyn',
+    docTitle: 'Vitaly Matitsyn — product designer',
+    docDescription:
+      'AI-powered product designer: complex interfaces (cybersecurity, MLOps, AI-native, B2B), design systems, AI-native product patterns. Portfolio, blog and resume on an infinite canvas',
     sections: {
       about: 'About',
       projects: 'Projects',
@@ -131,6 +137,8 @@ export function LangProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.documentElement.lang = lang
+    document.title = STR[lang].docTitle
+    document.querySelector('meta[name="description"]')?.setAttribute('content', STR[lang].docDescription)
   }, [lang])
 
   const setLang = (l: Lang) => {

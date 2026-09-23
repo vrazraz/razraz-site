@@ -88,13 +88,13 @@ function Draggable({
 
 /** Наклоны ±20°, размеры каждого спрайта варьируются в пределах ±10% от базовых 150px */
 const SPRITES = [
-  { src: 'decor-bulb.png', x: 790, y: -40, w: 138, rot: -14 },
-  { src: 'decor-books.png', x: -190, y: 700, w: 165, rot: 9 },
-  { src: 'decor-cursor.png', x: 700, y: 1150, w: 150, rot: -18 },
-  { src: 'decor-design.png', x: 1360, y: 640, w: 160, rot: 6 },
-  { src: 'decor-folder.png', x: 300, y: 1930, w: 143, rot: 16 },
-  { src: 'decor-lamp.png', x: 1780, y: 1240, w: 152, rot: -11 },
-  { src: 'decor-password.png', x: 2230, y: 130, w: 145, rot: -13 },
+  { src: 'decor-bulb.webp', x: 790, y: -40, w: 138, rot: -14 },
+  { src: 'decor-books.webp', x: -190, y: 700, w: 165, rot: 9 },
+  { src: 'decor-cursor.webp', x: 700, y: 1150, w: 150, rot: -18 },
+  { src: 'decor-design.webp', x: 1360, y: 640, w: 160, rot: 6 },
+  { src: 'decor-folder.webp', x: 300, y: 1930, w: 143, rot: 16 },
+  { src: 'decor-lamp.webp', x: 1780, y: 1240, w: 152, rot: -11 },
+  { src: 'decor-password.webp', x: 2230, y: 130, w: 145, rot: -13 },
 ]
 
 const VECTOR_DECOR: { key: string; x: number; y: number; node: ReactNode }[] = [
@@ -133,17 +133,16 @@ export function CanvasDecor({ scale, spaceHeld }: { scale: number; spaceHeld: bo
   )
 }
 
-/** Декор стандартного режима: закреплён на фоне (fixed), по краям экрана.
- *  Раскладка случайная на каждую загрузку: спрайты тасуются между левой
- *  и правой полосами, вертикальные слоты и наклоны рандомизируются. */
+/** Декор стандартного режима: закреплён на фоне (fixed). Раскладка
+ *  случайная на каждую загрузку, по всему фону, без слипания спрайтов. */
 const STD_SPRITES = [
-  'decor-bulb.png',
-  'decor-books.png',
-  'decor-cursor.png',
-  'decor-design.png',
-  'decor-folder.png',
-  'decor-lamp.png',
-  'decor-password.png',
+  'decor-bulb.webp',
+  'decor-books.webp',
+  'decor-cursor.webp',
+  'decor-design.webp',
+  'decor-folder.webp',
+  'decor-lamp.webp',
+  'decor-password.webp',
 ]
 
 function scatter(): { src: string; style: CSSProperties; w: number; rot: number }[] {
