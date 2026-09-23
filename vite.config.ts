@@ -114,6 +114,9 @@ function seoArtifacts(): Plugin {
   let outDir = 'dist'
   return {
     name: 'seo-artifacts',
+    /* Только сборка: Vitest тоже поднимает этот конфиг и иначе
+       записал бы файлы в свою фиктивную outDir в корне репозитория */
+    apply: 'build',
     configResolved(config) {
       outDir = config.build.outDir
     },
