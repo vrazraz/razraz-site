@@ -1,6 +1,12 @@
 {
   "posts": [
     {
+      "id": "1030",
+      "url": "https://t.me/prouxui/1030",
+      "title": "Фигма. Не вместо, а вместе.",
+      "date": "2026-11-03"
+    },
+    {
       "id": "1029",
       "url": "https://t.me/prouxui/1029",
       "title": "На прошлой и этой неделе в ИИ сообществе гремела REA (reverse engineering anyth…",
